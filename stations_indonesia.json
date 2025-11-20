@@ -1,325 +1,10 @@
 [
   {
-    "uid": 8288,
-    "name": "Pekanbaru, Indonesia",
-    "city": "Pekanbaru",
-    "lat": 0.46667,
-    "lon": 101.4666
-  },
-  {
-    "uid": -399373,
-    "name": "KLCC",
-    "city": "KLCC",
-    "lat": 3.156398,
-    "lon": 101.709812
-  },
-  {
-    "uid": -517159,
-    "name": "Kabutapen Penajam Paser Utara Nipah Nipah",
-    "city": "Kabutapen Penajam Paser Utara Nipah Nipah",
-    "lat": -1.310829997062683,
-    "lon": 116.7249984741211
-  },
-  {
-    "uid": -472675,
-    "name": "Kabupaten Kendal Tunggulrejo",
-    "city": "Kabupaten Kendal Tunggulrejo",
-    "lat": -6.931389808654785,
-    "lon": 110.18699645996094
-  },
-  {
-    "uid": -418018,
-    "name": "Ambon Gong Perdamaian",
-    "city": "Ambon Gong Perdamaian",
-    "lat": -3.6934099197387695,
-    "lon": 128.18099975585938
-  },
-  {
-    "uid": -568273,
-    "name": "Kabupaten Kutai Barat Sendawar",
-    "city": "Kabupaten Kutai Barat Sendawar",
-    "lat": -0.23409999907016754,
-    "lon": 115.69300079345703
-  },
-  {
-    "uid": -472585,
-    "name": "Kabupaten Cilacap Sidakaya",
-    "city": "Kabupaten Cilacap Sidakaya",
-    "lat": -7.722179889678955,
-    "lon": 109.01699829101562
-  },
-  {
-    "uid": -546343,
-    "name": "Kabupaten Ogan Ilir",
-    "city": "Kabupaten Ogan Ilir",
-    "lat": -3.255729913711548,
-    "lon": 104.64700317382812
-  },
-  {
-    "uid": -416746,
-    "name": "Palembang Bukit Kecil",
-    "city": "Palembang Bukit Kecil",
-    "lat": -2.9803860187530518,
-    "lon": 104.74724578857422
-  },
-  {
-    "uid": -519148,
-    "name": "Kota Sorong Remu Utara",
-    "city": "Kota Sorong Remu Utara",
-    "lat": -0.8803150057792664,
-    "lon": 131.28799438476562
-  },
-  {
-    "uid": -531565,
-    "name": "Jakarta Timur Kebon Nanas",
-    "city": "Jakarta Timur Kebon Nanas",
-    "lat": -6.233850002288818,
-    "lon": 106.87699890136719
-  },
-  {
-    "uid": -416911,
-    "name": "Manokwari Gn. Sowi",
-    "city": "Manokwari Gn. Sowi",
-    "lat": -0.8900089859962463,
-    "lon": 134.03900146484375
-  },
-  {
-    "uid": -526057,
-    "name": "Kabupaten Kampar Bangkinang",
-    "city": "Kabupaten Kampar Bangkinang",
-    "lat": 0.3249180018901825,
-    "lon": 101.0250015258789
-  },
-  {
-    "uid": -416824,
-    "name": "Samarinda Taman Segiri",
-    "city": "Samarinda Taman Segiri",
-    "lat": -0.4890739917755127,
-    "lon": 117.14700317382812
-  },
-  {
-    "uid": -475168,
-    "name": "Kabupaten Mojokerto Mojosari",
-    "city": "Kabupaten Mojokerto Mojosari",
-    "lat": -7.508540153503418,
-    "lon": 112.56099700927734
-  },
-  {
-    "uid": -519115,
-    "name": "Kota Pasuruan Petamanan",
-    "city": "Kota Pasuruan Petamanan",
-    "lat": -7.6555399894714355,
-    "lon": 112.90699768066406
-  },
-  {
-    "uid": -416797,
-    "name": "Palu Panca Bhakti",
-    "city": "Palu Panca Bhakti",
-    "lat": -0.8884109854698181,
-    "lon": 119.86699676513672
-  },
-  {
-    "uid": -416758,
-    "name": "Banjarmasin Kayu Tangi",
-    "city": "Banjarmasin Kayu Tangi",
-    "lat": -3.295938014984131,
-    "lon": 114.5893783569336
-  },
-  {
-    "uid": -516745,
-    "name": "Kabupaten Jombang Kepanjen",
-    "city": "Kabupaten Jombang Kepanjen",
-    "lat": -7.55286979675293,
-    "lon": 112.23699951171875
-  },
-  {
-    "uid": -531553,
-    "name": "Kabupaten Purwakarta Purnawarman",
-    "city": "Kabupaten Purwakarta Purnawarman",
-    "lat": -6.564449787139893,
-    "lon": 107.44599914550781
-  },
-  {
-    "uid": -416764,
-    "name": "Pontianak Tenggara",
-    "city": "Pontianak Tenggara",
-    "lat": -0.03109000064432621,
-    "lon": 109.3219985961914
-  },
-  {
-    "uid": -519136,
-    "name": "Kabupaten Sekadau Sekadau Hilir",
-    "city": "Kabupaten Sekadau Sekadau Hilir",
-    "lat": 0.005369000136852264,
-    "lon": 110.89099884033203
-  },
-  {
-    "uid": 8292,
-    "name": "Banjarbaru, Indonesia",
-    "city": "Banjarbaru",
-    "lat": -3.475,
-    "lon": 114.856
-  },
-  {
-    "uid": 13653,
-    "name": "Sleman, Indonesia",
-    "city": "Sleman",
-    "lat": -7.731,
-    "lon": 110.354
-  },
-  {
-    "uid": 13644,
-    "name": "Bengkulu, Indonesia",
-    "city": "Bengkulu",
-    "lat": -3.865,
-    "lon": 102.312
-  },
-  {
-    "uid": -536509,
-    "name": "Kabupaten Manggarai Barat Wae Kalamb",
-    "city": "Kabupaten Manggarai Barat Wae Kalamb",
-    "lat": -8.495189666748047,
-    "lon": 119.89399719238281
-  },
-  {
-    "uid": -540724,
-    "name": "Kabupaten Banjar",
-    "city": "Kabupaten Banjar",
-    "lat": -3.426140069961548,
-    "lon": 114.87999725341797
-  },
-  {
-    "uid": -416899,
-    "name": "Balikpapan Sepinggan",
-    "city": "Balikpapan Sepinggan",
-    "lat": -1.2427300214767456,
-    "lon": 116.89199829101562
-  },
-  {
-    "uid": -416845,
-    "name": "Padang Padang Pasir",
-    "city": "Padang Padang Pasir",
-    "lat": -0.9492400288581848,
-    "lon": 100.35399627685547
-  },
-  {
-    "uid": -416878,
-    "name": "Manado Wanea",
-    "city": "Manado Wanea",
-    "lat": 1.4711600542068481,
-    "lon": 124.84500122070312
-  },
-  {
-    "uid": -546973,
-    "name": "Kabupaten Hulu Sungai Selatan",
-    "city": "Kabupaten Hulu Sungai Selatan",
-    "lat": -2.783679962158203,
-    "lon": 115.26300048828125
-  },
-  {
-    "uid": -519187,
-    "name": "Kota Kediri Ngronggo",
-    "city": "Kota Kediri Ngronggo",
-    "lat": -7.812739849090576,
-    "lon": 112.01399993896484
-  },
-  {
-    "uid": -565915,
-    "name": "Kabupaten Kotawaringin Barat Madurejo",
-    "city": "Kabupaten Kotawaringin Barat Madurejo",
-    "lat": -2.706120014190674,
-    "lon": 111.61399841308594
-  },
-  {
-    "uid": -531547,
-    "name": "Kabupaten Gunung Mas",
-    "city": "Kabupaten Gunung Mas",
-    "lat": -1.1160999536514282,
-    "lon": 113.84100341796875
-  },
-  {
-    "uid": -416857,
-    "name": "Depok Pancoran Mas",
-    "city": "Depok Pancoran Mas",
-    "lat": -6.394780158996582,
-    "lon": 106.8239974975586
-  },
-  {
-    "uid": -416821,
-    "name": "Serang Sumurpecung",
-    "city": "Serang Sumurpecung",
-    "lat": -6.119740009307861,
-    "lon": 106.17400360107422
-  },
-  {
-    "uid": -520231,
-    "name": "Kabupaten Muara Enim",
-    "city": "Kabupaten Muara Enim",
-    "lat": -3.648560047149658,
-    "lon": 103.7750015258789
-  },
-  {
-    "uid": -531544,
-    "name": "Kabupaten Kapuas",
-    "city": "Kabupaten Kapuas",
-    "lat": -2.965630054473877,
-    "lon": 114.41500091552734
-  },
-  {
-    "uid": -416860,
-    "name": "Bandung Cihapit",
-    "city": "Bandung Cihapit",
-    "lat": -6.9014201164245605,
-    "lon": 107.6259994506836
-  },
-  {
-    "uid": -474973,
-    "name": "Kabupaten Gresik Kebomas",
-    "city": "Kabupaten Gresik Kebomas",
-    "lat": -7.170849800109863,
-    "lon": 112.53399658203125
-  },
-  {
-    "uid": -472450,
-    "name": "Kabupaten Semarang Candirejo",
-    "city": "Kabupaten Semarang Candirejo",
-    "lat": -7.148530006408691,
-    "lon": 110.40699768066406
-  },
-  {
-    "uid": -416836,
-    "name": "Kabupaten Tanjabtim Muara Sabak",
-    "city": "Kabupaten Tanjabtim Muara Sabak",
-    "lat": -1.2130500078201294,
-    "lon": 103.79100036621094
-  },
-  {
-    "uid": -519133,
-    "name": "Kota Tarakan Pamusian",
-    "city": "Kota Tarakan Pamusian",
-    "lat": 3.310699939727783,
-    "lon": 117.60099792480469
-  },
-  {
-    "uid": -418576,
-    "name": "Kuching",
-    "city": "Kuching",
-    "lat": 1.5503207,
-    "lon": 110.34696
-  },
-  {
-    "uid": 11755,
-    "name": "Kototabang, Indonesia",
-    "city": "Kototabang",
-    "lat": -0.251,
-    "lon": 100.382
-  },
-  {
-    "uid": -544657,
-    "name": "Kabupaten Bogor Cisarua",
-    "city": "Kabupaten Bogor Cisarua",
-    "lat": -6.69959020614624,
-    "lon": 106.97000122070312
+    "uid": -543139,
+    "name": "Kabupaten Nabire",
+    "city": "Kabupaten Nabire",
+    "lat": -3.3633499145507812,
+    "lon": 135.50100708007812
   },
   {
     "uid": -416884,
@@ -329,188 +14,6 @@
     "lon": 103.16100311279297
   },
   {
-    "uid": -526099,
-    "name": "Kabupaten Aceh Tengah",
-    "city": "Kabupaten Aceh Tengah",
-    "lat": 4.624090194702148,
-    "lon": 96.84210205078125
-  },
-  {
-    "uid": 13651,
-    "name": "Semarang, Indonesia",
-    "city": "Semarang",
-    "lat": -6.985,
-    "lon": 110.381
-  },
-  {
-    "uid": -532207,
-    "name": "Kabupaten Barito Kuala",
-    "city": "Kabupaten Barito Kuala",
-    "lat": -2.9836199283599854,
-    "lon": 114.73300170898438
-  },
-  {
-    "uid": -416905,
-    "name": "Tanjung Pinang Taman Pamedan",
-    "city": "Tanjung Pinang Taman Pamedan",
-    "lat": 0.9077550172805786,
-    "lon": 104.46399688720703
-  },
-  {
-    "uid": -416776,
-    "name": "Jambi Paal Lima",
-    "city": "Jambi Paal Lima",
-    "lat": -1.6297229528427124,
-    "lon": 103.60739135742188
-  },
-  {
-    "uid": -416923,
-    "name": "Kabupaten Bulungan Tj. Selor Hilir",
-    "city": "Kabupaten Bulungan Tj. Selor Hilir",
-    "lat": 3.0531299114227295,
-    "lon": 117.39199829101562
-  },
-  {
-    "uid": -416854,
-    "name": "Siak",
-    "city": "Siak",
-    "lat": 0.8004040122032166,
-    "lon": 102.052001953125
-  },
-  {
-    "uid": 13645,
-    "name": "Kotabaru, Indonesia",
-    "city": "Kotabaru",
-    "lat": -3.3,
-    "lon": 116.17
-  },
-  {
-    "uid": -417100,
-    "name": "Kabupaten Tangerang Tigaraksa",
-    "city": "Kabupaten Tangerang Tigaraksa",
-    "lat": -6.269869804382324,
-    "lon": 106.48400115966797
-  },
-  {
-    "uid": -416827,
-    "name": "Kabupaten Bekasi Sukamahi",
-    "city": "Kabupaten Bekasi Sukamahi",
-    "lat": -6.363800048828125,
-    "lon": 107.1719970703125
-  },
-  {
-    "uid": -472480,
-    "name": "Kabupaten Bandung Barat Saguling",
-    "city": "Kabupaten Bandung Barat Saguling",
-    "lat": -6.839240074157715,
-    "lon": 107.51100158691406
-  },
-  {
-    "uid": 13648,
-    "name": "Mempawah, Indonesia",
-    "city": "Mempawah",
-    "lat": 0.124,
-    "lon": 110.456
-  },
-  {
-    "uid": -416851,
-    "name": "Makassar Ujung Pandang",
-    "city": "Makassar Ujung Pandang",
-    "lat": -5.135849952697754,
-    "lon": 119.41400146484375
-  },
-  {
-    "uid": -416908,
-    "name": "Solo Manahan",
-    "city": "Solo Manahan",
-    "lat": -7.554540157318115,
-    "lon": 110.80599975585938
-  },
-  {
-    "uid": -519043,
-    "name": "Kabupaten Sragen Plumbungan",
-    "city": "Kabupaten Sragen Plumbungan",
-    "lat": -7.446559906005859,
-    "lon": 111.03600311279297
-  },
-  {
-    "uid": -416818,
-    "name": "Kabupaten Rokan Hilir Bangko",
-    "city": "Kabupaten Rokan Hilir Bangko",
-    "lat": 2.1082100868225098,
-    "lon": 100.8270034790039
-  },
-  {
-    "uid": -531559,
-    "name": "Kabupaten Asahan Sidomukti",
-    "city": "Kabupaten Asahan Sidomukti",
-    "lat": 2.993459939956665,
-    "lon": 99.61090087890625
-  },
-  {
-    "uid": 8645,
-    "name": "Batam, Indonesia",
-    "city": "Batam",
-    "lat": 1.124,
-    "lon": 104.126
-  },
-  {
-    "uid": -519205,
-    "name": "Kabupaten Badung Sempidi",
-    "city": "Kabupaten Badung Sempidi",
-    "lat": -8.603890419006348,
-    "lon": 115.1780014038086
-  },
-  {
-    "uid": -420154,
-    "name": "Surabaya Tandes",
-    "city": "Surabaya Tandes",
-    "lat": -7.258999824523926,
-    "lon": 112.6780014038086
-  },
-  {
-    "uid": -531550,
-    "name": "Kabupaten Murung Raya",
-    "city": "Kabupaten Murung Raya",
-    "lat": -0.6390770077705383,
-    "lon": 114.53700256347656
-  },
-  {
-    "uid": -416929,
-    "name": "Ternate Marikurubu",
-    "city": "Ternate Marikurubu",
-    "lat": 0.7872629761695862,
-    "lon": 127.3740005493164
-  },
-  {
-    "uid": -539257,
-    "name": "Kabupaten Penukal Abab Lematang Ilir",
-    "city": "Kabupaten Penukal Abab Lematang Ilir",
-    "lat": -3.3150100708007812,
-    "lon": 103.88200378417969
-  },
-  {
-    "uid": 13647,
-    "name": "Malang, Indonesia",
-    "city": "Malang",
-    "lat": -7.9551897,
-    "lon": 112.6119383
-  },
-  {
-    "uid": 13654,
-    "name": "Sorong, Indonesia",
-    "city": "Sorong",
-    "lat": -0.8634105,
-    "lon": 131.2544805
-  },
-  {
-    "uid": -515938,
-    "name": "Tangerang Benteng  Betawi",
-    "city": "Tangerang Benteng  Betawi",
-    "lat": -6.175670146942139,
-    "lon": 106.6449966430664
-  },
-  {
     "uid": -519118,
     "name": "Kabupaten Sintang Baning Kota",
     "city": "Kabupaten Sintang Baning Kota",
@@ -518,18 +21,11 @@
     "lon": 111.49700164794922
   },
   {
-    "uid": -532009,
-    "name": "Kota Probolinggo Kedopok",
-    "city": "Kota Probolinggo Kedopok",
-    "lat": -7.788430213928223,
-    "lon": 113.20999908447266
-  },
-  {
-    "uid": -472489,
-    "name": "Kota Cilegon Pulomerak",
-    "city": "Kota Cilegon Pulomerak",
-    "lat": -5.920650005340576,
-    "lon": 106.00700378417969
+    "uid": -531679,
+    "name": "KBN Marunda Jakarta Utara",
+    "city": "KBN Marunda Jakarta Utara",
+    "lat": -6.108980178833008,
+    "lon": 106.94400024414062
   },
   {
     "uid": -532006,
@@ -539,18 +35,137 @@
     "lon": 109.4990005493164
   },
   {
-    "uid": 8289,
-    "name": "Jambi, Indonesia",
-    "city": "Jambi",
-    "lat": -1.6318964,
-    "lon": 103.6414547
+    "uid": -519130,
+    "name": "Kabupaten Pasuruan Raci",
+    "city": "Kabupaten Pasuruan Raci",
+    "lat": -7.610300064086914,
+    "lon": 112.83000183105469
   },
   {
-    "uid": -519139,
-    "name": "Kabupaten Merauke Mandala",
-    "city": "Kabupaten Merauke Mandala",
-    "lat": -8.508919715881348,
-    "lon": 140.41000366210938
+    "uid": -517159,
+    "name": "Kabutapen Penajam Paser Utara Nipah Nipah",
+    "city": "Kabutapen Penajam Paser Utara Nipah Nipah",
+    "lat": -1.310829997062683,
+    "lon": 116.7249984741211
+  },
+  {
+    "uid": -519016,
+    "name": "Kota Madiun Taman",
+    "city": "Kota Madiun Taman",
+    "lat": -7.6532697677612305,
+    "lon": 111.52300262451172
+  },
+  {
+    "uid": 13654,
+    "name": "Sorong, Indonesia",
+    "city": "Sorong",
+    "lat": -0.8634105,
+    "lon": 131.2544805
+  },
+  {
+    "uid": -416782,
+    "name": "Kabupaten Barito Selatan Sanggu",
+    "city": "Kabupaten Barito Selatan Sanggu",
+    "lat": -1.6793400049209595,
+    "lon": 114.90799713134766
+  },
+  {
+    "uid": -472492,
+    "name": "Kabupaten Indramayu Margadadi",
+    "city": "Kabupaten Indramayu Margadadi",
+    "lat": -6.327040195465088,
+    "lon": 108.3219985961914
+  },
+  {
+    "uid": -520231,
+    "name": "Kabupaten Muara Enim",
+    "city": "Kabupaten Muara Enim",
+    "lat": -3.648560047149658,
+    "lon": 103.7750015258789
+  },
+  {
+    "uid": -399724,
+    "name": "Bukit Bintang",
+    "city": "Bukit Bintang",
+    "lat": 3.146015,
+    "lon": 101.710211
+  },
+  {
+    "uid": 8646,
+    "name": "Indrapuri, Indonesia",
+    "city": "Indrapuri",
+    "lat": 5.404,
+    "lon": 95.475
+  },
+  {
+    "uid": -416827,
+    "name": "Kabupaten Bekasi Sukamahi",
+    "city": "Kabupaten Bekasi Sukamahi",
+    "lat": -6.363800048828125,
+    "lon": 107.1719970703125
+  },
+  {
+    "uid": -541945,
+    "name": "Kabupaten Nagan Raya",
+    "city": "Kabupaten Nagan Raya",
+    "lat": 4.082280158996582,
+    "lon": 96.16840362548828
+  },
+  {
+    "uid": -416899,
+    "name": "Balikpapan Sepinggan",
+    "city": "Balikpapan Sepinggan",
+    "lat": -1.2427300214767456,
+    "lon": 116.89199829101562
+  },
+  {
+    "uid": -416857,
+    "name": "Depok Pancoran Mas",
+    "city": "Depok Pancoran Mas",
+    "lat": -6.394780158996582,
+    "lon": 106.8239974975586
+  },
+  {
+    "uid": -565915,
+    "name": "Kabupaten Kotawaringin Barat Madurejo",
+    "city": "Kabupaten Kotawaringin Barat Madurejo",
+    "lat": -2.706120014190674,
+    "lon": 111.61399841308594
+  },
+  {
+    "uid": -416905,
+    "name": "Tanjung Pinang Taman Pamedan",
+    "city": "Tanjung Pinang Taman Pamedan",
+    "lat": 0.9077550172805786,
+    "lon": 104.46399688720703
+  },
+  {
+    "uid": -535021,
+    "name": "Kabupaten Siak Bunga Raya",
+    "city": "Kabupaten Siak Bunga Raya",
+    "lat": 0.961001992225647,
+    "lon": 102.072998046875
+  },
+  {
+    "uid": -531559,
+    "name": "Kabupaten Asahan Sidomukti",
+    "city": "Kabupaten Asahan Sidomukti",
+    "lat": 2.993459939956665,
+    "lon": 99.61090087890625
+  },
+  {
+    "uid": 8342,
+    "name": "Palangka Raya, Indonesia",
+    "city": "Palangka Raya",
+    "lat": -2.22611,
+    "lon": 113.945
+  },
+  {
+    "uid": 13841,
+    "name": "Maros, Indonesia",
+    "city": "Maros",
+    "lat": -4.997,
+    "lon": 119.57
   },
   {
     "uid": -416887,
@@ -560,46 +175,18 @@
     "lon": 116.09400177001953
   },
   {
-    "uid": -519112,
-    "name": "Kabupaten Banyuwangi Mojopanggung",
-    "city": "Kabupaten Banyuwangi Mojopanggung",
-    "lat": -8.211389541625977,
-    "lon": 114.35099792480469
+    "uid": -532009,
+    "name": "Kota Probolinggo Kedopok",
+    "city": "Kota Probolinggo Kedopok",
+    "lat": -7.788430213928223,
+    "lon": 113.20999908447266
   },
   {
-    "uid": -540727,
-    "name": "Kabupaten Katingan",
-    "city": "Kabupaten Katingan",
-    "lat": -1.8900699615478516,
-    "lon": 113.41500091552734
-  },
-  {
-    "uid": -519013,
-    "name": "Kabupaten Madiun Mejayan",
-    "city": "Kabupaten Madiun Mejayan",
-    "lat": -7.5488200187683105,
-    "lon": 111.66699981689453
-  },
-  {
-    "uid": -416938,
-    "name": "Gorontalo Taman Kota",
-    "city": "Gorontalo Taman Kota",
-    "lat": 0.5517759919166565,
-    "lon": 123.05699920654297
-  },
-  {
-    "uid": 10490,
-    "name": "Pangkalanbun, Indonesia",
-    "city": "Pangkalanbun",
-    "lat": -2.676583,
-    "lon": 111.626448
-  },
-  {
-    "uid": -543139,
-    "name": "Kabupaten Nabire",
-    "city": "Kabupaten Nabire",
-    "lat": -3.3633499145507812,
-    "lon": 135.50100708007812
+    "uid": -416923,
+    "name": "Kabupaten Bulungan Tj. Selor Hilir",
+    "city": "Kabupaten Bulungan Tj. Selor Hilir",
+    "lat": 3.0531299114227295,
+    "lon": 117.39199829101562
   },
   {
     "uid": -519142,
@@ -609,32 +196,74 @@
     "lon": 113.2239990234375
   },
   {
-    "uid": -416920,
-    "name": "Kendari Mandonga",
-    "city": "Kendari Mandonga",
-    "lat": -3.9755001068115234,
-    "lon": 122.5199966430664
+    "uid": -516745,
+    "name": "Kabupaten Jombang Kepanjen",
+    "city": "Kabupaten Jombang Kepanjen",
+    "lat": -7.55286979675293,
+    "lon": 112.23699951171875
   },
   {
-    "uid": -519121,
-    "name": "Kota Bontang Tanjung Laut",
-    "city": "Kota Bontang Tanjung Laut",
-    "lat": 0.12240999937057495,
-    "lon": 117.48600006103516
+    "uid": -519124,
+    "name": "Kabupaten Rembang Leteh",
+    "city": "Kabupaten Rembang Leteh",
+    "lat": -6.717229843139648,
+    "lon": 111.34400177001953
   },
   {
-    "uid": -531562,
-    "name": "Kabupaten Musi Banyuasin Serasan Jaya",
-    "city": "Kabupaten Musi Banyuasin Serasan Jaya",
-    "lat": -2.8742001056671143,
-    "lon": 103.83699798583984
+    "uid": -538438,
+    "name": "Seaside Residences",
+    "city": "Seaside Residences",
+    "lat": 1.3076219322854712,
+    "lon": 103.9270617487457
   },
   {
-    "uid": 13505,
-    "name": "Tanjung Harapan, Indonesia",
-    "city": "Tanjung Harapan",
-    "lat": 2.83,
-    "lon": 117.36
+    "uid": -519187,
+    "name": "Kota Kediri Ngronggo",
+    "city": "Kota Kediri Ngronggo",
+    "lat": -7.812739849090576,
+    "lon": 112.01399993896484
+  },
+  {
+    "uid": -546346,
+    "name": "Kabupaten Muaro Jambi",
+    "city": "Kabupaten Muaro Jambi",
+    "lat": -1.452720046043396,
+    "lon": 103.51799774169922
+  },
+  {
+    "uid": -572263,
+    "name": "",
+    "city": "",
+    "lat": 2.521947,
+    "lon": 113.833569
+  },
+  {
+    "uid": -519127,
+    "name": "Kabupaten Kubu Raya Kapuas",
+    "city": "Kabupaten Kubu Raya Kapuas",
+    "lat": -0.12665799260139465,
+    "lon": 109.40399932861328
+  },
+  {
+    "uid": -519133,
+    "name": "Kota Tarakan Pamusian",
+    "city": "Kota Tarakan Pamusian",
+    "lat": 3.310699939727783,
+    "lon": 117.60099792480469
+  },
+  {
+    "uid": 10490,
+    "name": "Pangkalanbun, Indonesia",
+    "city": "Pangkalanbun",
+    "lat": -2.676583,
+    "lon": 111.626448
+  },
+  {
+    "uid": 8645,
+    "name": "Batam, Indonesia",
+    "city": "Batam",
+    "lat": 1.124,
+    "lon": 104.126
   },
   {
     "uid": -417103,
@@ -644,11 +273,333 @@
     "lon": 98.67330169677734
   },
   {
-    "uid": -416782,
-    "name": "Kabupaten Barito Selatan Sanggu",
-    "city": "Kabupaten Barito Selatan Sanggu",
-    "lat": -1.6793400049209595,
-    "lon": 114.90799713134766
+    "uid": -416764,
+    "name": "Pontianak Tenggara",
+    "city": "Pontianak Tenggara",
+    "lat": -0.03109000064432621,
+    "lon": 109.3219985961914
+  },
+  {
+    "uid": 13653,
+    "name": "Sleman, Indonesia",
+    "city": "Sleman",
+    "lat": -7.731,
+    "lon": 110.354
+  },
+  {
+    "uid": 5779,
+    "name": "Miri",
+    "city": "Miri",
+    "lat": 4.333131,
+    "lon": 113.99486
+  },
+  {
+    "uid": -540724,
+    "name": "Kabupaten Banjar",
+    "city": "Kabupaten Banjar",
+    "lat": -3.426140069961548,
+    "lon": 114.87999725341797
+  },
+  {
+    "uid": -519019,
+    "name": "Kabupaten Bojonegoro",
+    "city": "Kabupaten Bojonegoro",
+    "lat": -7.15556001663208,
+    "lon": 111.88200378417969
+  },
+  {
+    "uid": -526057,
+    "name": "Kabupaten Kampar Bangkinang",
+    "city": "Kabupaten Kampar Bangkinang",
+    "lat": 0.3249180018901825,
+    "lon": 101.0250015258789
+  },
+  {
+    "uid": -529681,
+    "name": "Kabupaten Aceh Besar",
+    "city": "Kabupaten Aceh Besar",
+    "lat": 5.300059795379639,
+    "lon": 95.60540008544922
+  },
+  {
+    "uid": -519205,
+    "name": "Kabupaten Badung Sempidi",
+    "city": "Kabupaten Badung Sempidi",
+    "lat": -8.603890419006348,
+    "lon": 115.1780014038086
+  },
+  {
+    "uid": -475168,
+    "name": "Kabupaten Mojokerto Mojosari",
+    "city": "Kabupaten Mojokerto Mojosari",
+    "lat": -7.508540153503418,
+    "lon": 112.56099700927734
+  },
+  {
+    "uid": -472675,
+    "name": "Kabupaten Kendal Tunggulrejo",
+    "city": "Kabupaten Kendal Tunggulrejo",
+    "lat": -6.931389808654785,
+    "lon": 110.18699645996094
+  },
+  {
+    "uid": -416821,
+    "name": "Serang Sumurpecung",
+    "city": "Serang Sumurpecung",
+    "lat": -6.119740009307861,
+    "lon": 106.17400360107422
+  },
+  {
+    "uid": -519112,
+    "name": "Kabupaten Banyuwangi Mojopanggung",
+    "city": "Kabupaten Banyuwangi Mojopanggung",
+    "lat": -8.211389541625977,
+    "lon": 114.35099792480469
+  },
+  {
+    "uid": -519007,
+    "name": "Kabupaten Tuban",
+    "city": "Kabupaten Tuban",
+    "lat": -6.895209789276123,
+    "lon": 112.03900146484375
+  },
+  {
+    "uid": -519121,
+    "name": "Kota Bontang Tanjung Laut",
+    "city": "Kota Bontang Tanjung Laut",
+    "lat": 0.12240999937057495,
+    "lon": 117.48600006103516
+  },
+  {
+    "uid": -519151,
+    "name": "Kabupaten Sambas Dalam Kaum",
+    "city": "Kabupaten Sambas Dalam Kaum",
+    "lat": 1.3610999584197998,
+    "lon": 109.3290023803711
+  },
+  {
+    "uid": -416818,
+    "name": "Kabupaten Rokan Hilir Bangko",
+    "city": "Kabupaten Rokan Hilir Bangko",
+    "lat": 2.1082100868225098,
+    "lon": 100.8270034790039
+  },
+  {
+    "uid": -416929,
+    "name": "Ternate Marikurubu",
+    "city": "Ternate Marikurubu",
+    "lat": 0.7872629761695862,
+    "lon": 127.3740005493164
+  },
+  {
+    "uid": 8292,
+    "name": "Banjarbaru, Indonesia",
+    "city": "Banjarbaru",
+    "lat": -3.475,
+    "lon": 114.856
+  },
+  {
+    "uid": 13505,
+    "name": "Tanjung Harapan, Indonesia",
+    "city": "Tanjung Harapan",
+    "lat": 2.83,
+    "lon": 117.36
+  },
+  {
+    "uid": -416911,
+    "name": "Manokwari Gn. Sowi",
+    "city": "Manokwari Gn. Sowi",
+    "lat": -0.8900089859962463,
+    "lon": 134.03900146484375
+  },
+  {
+    "uid": -420154,
+    "name": "Surabaya Tandes",
+    "city": "Surabaya Tandes",
+    "lat": -7.258999824523926,
+    "lon": 112.6780014038086
+  },
+  {
+    "uid": -416797,
+    "name": "Palu Panca Bhakti",
+    "city": "Palu Panca Bhakti",
+    "lat": -0.8884109854698181,
+    "lon": 119.86699676513672
+  },
+  {
+    "uid": -416896,
+    "name": "Pangkalpinang Bukit Intan",
+    "city": "Pangkalpinang Bukit Intan",
+    "lat": -2.149630069732666,
+    "lon": 106.11100006103516
+  },
+  {
+    "uid": 13648,
+    "name": "Mempawah, Indonesia",
+    "city": "Mempawah",
+    "lat": 0.124,
+    "lon": 110.456
+  },
+  {
+    "uid": -536500,
+    "name": "Kabupaten Sumba Timur",
+    "city": "Kabupaten Sumba Timur",
+    "lat": -9.675189971923828,
+    "lon": 120.22899627685547
+  },
+  {
+    "uid": -472585,
+    "name": "Kabupaten Cilacap Sidakaya",
+    "city": "Kabupaten Cilacap Sidakaya",
+    "lat": -7.722179889678955,
+    "lon": 109.01699829101562
+  },
+  {
+    "uid": -531553,
+    "name": "Kabupaten Purwakarta Purnawarman",
+    "city": "Kabupaten Purwakarta Purnawarman",
+    "lat": -6.564449787139893,
+    "lon": 107.44599914550781
+  },
+  {
+    "uid": -416860,
+    "name": "Bandung Cihapit",
+    "city": "Bandung Cihapit",
+    "lat": -6.9014201164245605,
+    "lon": 107.6259994506836
+  },
+  {
+    "uid": -416845,
+    "name": "Padang Padang Pasir",
+    "city": "Padang Padang Pasir",
+    "lat": -0.9492400288581848,
+    "lon": 100.35399627685547
+  },
+  {
+    "uid": -546343,
+    "name": "Kabupaten Ogan Ilir",
+    "city": "Kabupaten Ogan Ilir",
+    "lat": -3.255729913711548,
+    "lon": 104.64700317382812
+  },
+  {
+    "uid": 8289,
+    "name": "Jambi, Indonesia",
+    "city": "Jambi",
+    "lat": -1.6318964,
+    "lon": 103.6414547
+  },
+  {
+    "uid": -531544,
+    "name": "Kabupaten Kapuas",
+    "city": "Kabupaten Kapuas",
+    "lat": -2.965630054473877,
+    "lon": 114.41500091552734
+  },
+  {
+    "uid": -540727,
+    "name": "Kabupaten Katingan",
+    "city": "Kabupaten Katingan",
+    "lat": -1.8900699615478516,
+    "lon": 113.41500091552734
+  },
+  {
+    "uid": -519043,
+    "name": "Kabupaten Sragen Plumbungan",
+    "city": "Kabupaten Sragen Plumbungan",
+    "lat": -7.446559906005859,
+    "lon": 111.03600311279297
+  },
+  {
+    "uid": -472480,
+    "name": "Kabupaten Bandung Barat Saguling",
+    "city": "Kabupaten Bandung Barat Saguling",
+    "lat": -6.839240074157715,
+    "lon": 107.51100158691406
+  },
+  {
+    "uid": -522064,
+    "name": "Kota Tomohon",
+    "city": "Kota Tomohon",
+    "lat": 1.3109999895095825,
+    "lon": 124.80500030517578
+  },
+  {
+    "uid": -416920,
+    "name": "Kendari Mandonga",
+    "city": "Kendari Mandonga",
+    "lat": -3.9755001068115234,
+    "lon": 122.5199966430664
+  },
+  {
+    "uid": -532207,
+    "name": "Kabupaten Barito Kuala",
+    "city": "Kabupaten Barito Kuala",
+    "lat": -2.9836199283599854,
+    "lon": 114.73300170898438
+  },
+  {
+    "uid": -531550,
+    "name": "Kabupaten Murung Raya",
+    "city": "Kabupaten Murung Raya",
+    "lat": -0.6390770077705383,
+    "lon": 114.53700256347656
+  },
+  {
+    "uid": 13645,
+    "name": "Kotabaru, Indonesia",
+    "city": "Kotabaru",
+    "lat": -3.3,
+    "lon": 116.17
+  },
+  {
+    "uid": -546973,
+    "name": "Kabupaten Hulu Sungai Selatan",
+    "city": "Kabupaten Hulu Sungai Selatan",
+    "lat": -2.783679962158203,
+    "lon": 115.26300048828125
+  },
+  {
+    "uid": -539257,
+    "name": "Kabupaten Penukal Abab Lematang Ilir",
+    "city": "Kabupaten Penukal Abab Lematang Ilir",
+    "lat": -3.3150100708007812,
+    "lon": 103.88200378417969
+  },
+  {
+    "uid": -416878,
+    "name": "Manado Wanea",
+    "city": "Manado Wanea",
+    "lat": 1.4711600542068481,
+    "lon": 124.84500122070312
+  },
+  {
+    "uid": 13650,
+    "name": "Pesawaran, Indonesia",
+    "city": "Pesawaran",
+    "lat": -5.17,
+    "lon": 105.178
+  },
+  {
+    "uid": -474973,
+    "name": "Kabupaten Gresik Kebomas",
+    "city": "Kabupaten Gresik Kebomas",
+    "lat": -7.170849800109863,
+    "lon": 112.53399658203125
+  },
+  {
+    "uid": -519013,
+    "name": "Kabupaten Madiun Mejayan",
+    "city": "Kabupaten Madiun Mejayan",
+    "lat": -7.5488200187683105,
+    "lon": 111.66699981689453
+  },
+  {
+    "uid": -544657,
+    "name": "Kabupaten Bogor Cisarua",
+    "city": "Kabupaten Bogor Cisarua",
+    "lat": -6.69959020614624,
+    "lon": 106.97000122070312
   },
   {
     "uid": -519145,
@@ -665,130 +616,18 @@
     "lon": 100.30400085449219
   },
   {
-    "uid": 8342,
-    "name": "Palangka Raya, Indonesia",
-    "city": "Palangka Raya",
-    "lat": -2.22611,
-    "lon": 113.945
+    "uid": 13651,
+    "name": "Semarang, Indonesia",
+    "city": "Semarang",
+    "lat": -6.985,
+    "lon": 110.381
   },
   {
-    "uid": 5779,
-    "name": "Miri",
-    "city": "Miri",
-    "lat": 4.333131,
-    "lon": 113.99486
-  },
-  {
-    "uid": -472492,
-    "name": "Kabupaten Indramayu Margadadi",
-    "city": "Kabupaten Indramayu Margadadi",
-    "lat": -6.327040195465088,
-    "lon": 108.3219985961914
-  },
-  {
-    "uid": -531556,
-    "name": "Kabupaten Lampung Selatan Way Urang",
-    "city": "Kabupaten Lampung Selatan Way Urang",
-    "lat": -5.716100215911865,
-    "lon": 105.58200073242188
-  },
-  {
-    "uid": -535021,
-    "name": "Kabupaten Siak Bunga Raya",
-    "city": "Kabupaten Siak Bunga Raya",
-    "lat": 0.961001992225647,
-    "lon": 102.072998046875
-  },
-  {
-    "uid": -541945,
-    "name": "Kabupaten Nagan Raya",
-    "city": "Kabupaten Nagan Raya",
-    "lat": 4.082280158996582,
-    "lon": 96.16840362548828
-  },
-  {
-    "uid": 13650,
-    "name": "Pesawaran, Indonesia",
-    "city": "Pesawaran",
-    "lat": -5.17,
-    "lon": 105.178
-  },
-  {
-    "uid": -519127,
-    "name": "Kabupaten Kubu Raya Kapuas",
-    "city": "Kabupaten Kubu Raya Kapuas",
-    "lat": -0.12665799260139465,
-    "lon": 109.40399932861328
-  },
-  {
-    "uid": -416941,
-    "name": "Mamuju Ahmad Kirang",
-    "city": "Mamuju Ahmad Kirang",
-    "lat": -2.676949977874756,
-    "lon": 118.88999938964844
-  },
-  {
-    "uid": -416869,
-    "name": "Bandar Lampung Talang",
-    "city": "Bandar Lampung Talang",
-    "lat": -5.4417901039123535,
-    "lon": 105.25599670410156
-  },
-  {
-    "uid": -539251,
-    "name": "Kabupaten Musi Rawas",
-    "city": "Kabupaten Musi Rawas",
-    "lat": -3.244539976119995,
-    "lon": 103.00900268554688
-  },
-  {
-    "uid": -416896,
-    "name": "Pangkalpinang Bukit Intan",
-    "city": "Pangkalpinang Bukit Intan",
-    "lat": -2.149630069732666,
-    "lon": 106.11100006103516
-  },
-  {
-    "uid": -529681,
-    "name": "Kabupaten Aceh Besar",
-    "city": "Kabupaten Aceh Besar",
-    "lat": 5.300059795379639,
-    "lon": 95.60540008544922
-  },
-  {
-    "uid": -522064,
-    "name": "Kota Tomohon",
-    "city": "Kota Tomohon",
-    "lat": 1.3109999895095825,
-    "lon": 124.80500030517578
-  },
-  {
-    "uid": -519016,
-    "name": "Kota Madiun Taman",
-    "city": "Kota Madiun Taman",
-    "lat": -7.6532697677612305,
-    "lon": 111.52300262451172
-  },
-  {
-    "uid": -519151,
-    "name": "Kabupaten Sambas Dalam Kaum",
-    "city": "Kabupaten Sambas Dalam Kaum",
-    "lat": 1.3610999584197998,
-    "lon": 109.3290023803711
-  },
-  {
-    "uid": 8646,
-    "name": "Indrapuri, Indonesia",
-    "city": "Indrapuri",
-    "lat": 5.404,
-    "lon": 95.475
-  },
-  {
-    "uid": -536500,
-    "name": "Kabupaten Sumba Timur",
-    "city": "Kabupaten Sumba Timur",
-    "lat": -9.675189971923828,
-    "lon": 120.22899627685547
+    "uid": -416851,
+    "name": "Makassar Ujung Pandang",
+    "city": "Makassar Ujung Pandang",
+    "lat": -5.135849952697754,
+    "lon": 119.41400146484375
   },
   {
     "uid": -538435,
@@ -798,31 +637,213 @@
     "lon": 98.60810089111328
   },
   {
-    "uid": 13841,
-    "name": "Maros, Indonesia",
-    "city": "Maros",
-    "lat": -4.997,
-    "lon": 119.57
+    "uid": -416842,
+    "name": "Jakarta GBK",
+    "city": "Jakarta GBK",
+    "lat": -6.2154998779296875,
+    "lon": 106.8030014038086
   },
   {
-    "uid": -519130,
-    "name": "Kabupaten Pasuruan Raci",
-    "city": "Kabupaten Pasuruan Raci",
-    "lat": -7.610300064086914,
-    "lon": 112.83000183105469
+    "uid": -519139,
+    "name": "Kabupaten Merauke Mandala",
+    "city": "Kabupaten Merauke Mandala",
+    "lat": -8.508919715881348,
+    "lon": 140.41000366210938
   },
   {
-    "uid": -519007,
-    "name": "Kabupaten Tuban",
-    "city": "Kabupaten Tuban",
-    "lat": -6.895209789276123,
-    "lon": 112.03900146484375
+    "uid": -416941,
+    "name": "Mamuju Ahmad Kirang",
+    "city": "Mamuju Ahmad Kirang",
+    "lat": -2.676949977874756,
+    "lon": 118.88999938964844
   },
   {
-    "uid": -546346,
-    "name": "Kabupaten Muaro Jambi",
-    "city": "Kabupaten Muaro Jambi",
-    "lat": -1.452720046043396,
-    "lon": 103.51799774169922
+    "uid": -568273,
+    "name": "Kabupaten Kutai Barat Sendawar",
+    "city": "Kabupaten Kutai Barat Sendawar",
+    "lat": -0.23409999907016754,
+    "lon": 115.69300079345703
+  },
+  {
+    "uid": -531556,
+    "name": "Kabupaten Lampung Selatan Way Urang",
+    "city": "Kabupaten Lampung Selatan Way Urang",
+    "lat": -5.716100215911865,
+    "lon": 105.58200073242188
+  },
+  {
+    "uid": -519136,
+    "name": "Kabupaten Sekadau Sekadau Hilir",
+    "city": "Kabupaten Sekadau Sekadau Hilir",
+    "lat": 0.005369000136852264,
+    "lon": 110.89099884033203
+  },
+  {
+    "uid": 13647,
+    "name": "Malang, Indonesia",
+    "city": "Malang",
+    "lat": -7.9551897,
+    "lon": 112.6119383
+  },
+  {
+    "uid": 8288,
+    "name": "Pekanbaru, Indonesia",
+    "city": "Pekanbaru",
+    "lat": 0.46667,
+    "lon": 101.4666
+  },
+  {
+    "uid": -519115,
+    "name": "Kota Pasuruan Petamanan",
+    "city": "Kota Pasuruan Petamanan",
+    "lat": -7.6555399894714355,
+    "lon": 112.90699768066406
+  },
+  {
+    "uid": 13644,
+    "name": "Bengkulu, Indonesia",
+    "city": "Bengkulu",
+    "lat": -3.865,
+    "lon": 102.312
+  },
+  {
+    "uid": -416758,
+    "name": "Banjarmasin Kayu Tangi",
+    "city": "Banjarmasin Kayu Tangi",
+    "lat": -3.295938014984131,
+    "lon": 114.5893783569336
+  },
+  {
+    "uid": -416908,
+    "name": "Solo Manahan",
+    "city": "Solo Manahan",
+    "lat": -7.554540157318115,
+    "lon": 110.80599975585938
+  },
+  {
+    "uid": -531565,
+    "name": "Jakarta Timur Kebon Nanas",
+    "city": "Jakarta Timur Kebon Nanas",
+    "lat": -6.233850002288818,
+    "lon": 106.87699890136719
+  },
+  {
+    "uid": -416776,
+    "name": "Jambi Paal Lima",
+    "city": "Jambi Paal Lima",
+    "lat": -1.6297229528427124,
+    "lon": 103.60739135742188
+  },
+  {
+    "uid": -536509,
+    "name": "Kabupaten Manggarai Barat Wae Kalamb",
+    "city": "Kabupaten Manggarai Barat Wae Kalamb",
+    "lat": -8.495189666748047,
+    "lon": 119.89399719238281
+  },
+  {
+    "uid": -418576,
+    "name": "Kuching",
+    "city": "Kuching",
+    "lat": 1.5503207,
+    "lon": 110.34696
+  },
+  {
+    "uid": -526099,
+    "name": "Kabupaten Aceh Tengah",
+    "city": "Kabupaten Aceh Tengah",
+    "lat": 4.624090194702148,
+    "lon": 96.84210205078125
+  },
+  {
+    "uid": -418018,
+    "name": "Ambon Gong Perdamaian",
+    "city": "Ambon Gong Perdamaian",
+    "lat": -3.6934099197387695,
+    "lon": 128.18099975585938
+  },
+  {
+    "uid": -417100,
+    "name": "Kabupaten Tangerang Tigaraksa",
+    "city": "Kabupaten Tangerang Tigaraksa",
+    "lat": -6.269869804382324,
+    "lon": 106.48400115966797
+  },
+  {
+    "uid": -416938,
+    "name": "Gorontalo Taman Kota",
+    "city": "Gorontalo Taman Kota",
+    "lat": 0.5517759919166565,
+    "lon": 123.05699920654297
+  },
+  {
+    "uid": -531547,
+    "name": "Kabupaten Gunung Mas",
+    "city": "Kabupaten Gunung Mas",
+    "lat": -1.1160999536514282,
+    "lon": 113.84100341796875
+  },
+  {
+    "uid": -472450,
+    "name": "Kabupaten Semarang Candirejo",
+    "city": "Kabupaten Semarang Candirejo",
+    "lat": -7.148530006408691,
+    "lon": 110.40699768066406
+  },
+  {
+    "uid": -472489,
+    "name": "Kota Cilegon Pulomerak",
+    "city": "Kota Cilegon Pulomerak",
+    "lat": -5.920650005340576,
+    "lon": 106.00700378417969
+  },
+  {
+    "uid": -531562,
+    "name": "Kabupaten Musi Banyuasin Serasan Jaya",
+    "city": "Kabupaten Musi Banyuasin Serasan Jaya",
+    "lat": -2.8742001056671143,
+    "lon": 103.83699798583984
+  },
+  {
+    "uid": -539251,
+    "name": "Kabupaten Musi Rawas",
+    "city": "Kabupaten Musi Rawas",
+    "lat": -3.244539976119995,
+    "lon": 103.00900268554688
+  },
+  {
+    "uid": -416926,
+    "name": "DLH MEDAN 02",
+    "city": "DLH MEDAN 02",
+    "lat": 3.652869939804077,
+    "lon": 98.66580200195312
+  },
+  {
+    "uid": -416824,
+    "name": "Samarinda Taman Segiri",
+    "city": "Samarinda Taman Segiri",
+    "lat": -0.4890739917755127,
+    "lon": 117.14700317382812
+  },
+  {
+    "uid": -416746,
+    "name": "Palembang Bukit Kecil",
+    "city": "Palembang Bukit Kecil",
+    "lat": -2.9803860187530518,
+    "lon": 104.74724578857422
+  },
+  {
+    "uid": 11755,
+    "name": "Kototabang, Indonesia",
+    "city": "Kototabang",
+    "lat": -0.251,
+    "lon": 100.382
+  },
+  {
+    "uid": -519148,
+    "name": "Kota Sorong Remu Utara",
+    "city": "Kota Sorong Remu Utara",
+    "lat": -0.8803150057792664,
+    "lon": 131.28799438476562
   }
 ]
