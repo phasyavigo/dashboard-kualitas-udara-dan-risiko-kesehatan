@@ -1,18 +1,24 @@
 import os, json, time, requests, psycopg2
 from psycopg2.extras import Json
 
-with open('secrets.json', 'r') as file:
-    secrets = json.load(file)
-    file.close()
+try:
+    with open('secrets.json', 'r') as file:
+        secrets = json.load(file)
+        file.close()
+    TOKEN = secrets.get("aqicn-api-key")
+except FileNotFoundError:
+    TOKEN = os.environ.get("AQICN_TOKEN")
 
-TOKEN = secrets["aqicn-api-key"]
+if not TOKEN:
+    print("Error: No AQICN Token found in secrets.json or environment variables.")
+    exit(1)
 
 DB = {
-  "host": "localhost",
-  "port": 5432,
-  "dbname": "airdb",
-  "user": "air",
-  "password": "airpass"
+  "host": os.environ.get("PGHOST", "localhost"),
+  "port": int(os.environ.get("PGPORT", 5432)),
+  "dbname": os.environ.get("PGDATABASE", "airdb"),
+  "user": os.environ.get("PGUSER", "air"),
+  "password": os.environ.get("PGPASSWORD", "airpass")
 }
 
 BATCH = 0.5
@@ -43,16 +49,46 @@ def fetch_detail(uid, lat, lon):
         return js["data"]
     return None
 
+import math
+
+def sanitize_data(data):
+    if isinstance(data, dict):
+        return {k: sanitize_data(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [sanitize_data(v) for v in data]
+    elif isinstance(data, float):
+        if math.isnan(data) or math.isinf(data):
+            return None
+    return data
+
 def insert_observations(station_id, ts, iaqi, raw):
     conn = connect()
     cur = conn.cursor()
+    
+    # Sanitize iaqi to remove NaNs
+    iaqi = sanitize_data(iaqi)
+    
+    json_str = json.dumps(iaqi)
+    print(f"DEBUG: station_id={station_id}, type={type(iaqi)}, json_len={len(json_str)}")
+    # print(f"DEBUG JSON: {json_str}") # Uncomment if needed, but might be huge
+
+    # Insert observations
     for param, obj in iaqi.items():
         value = obj.get("v")
         unit = obj.get("u") if isinstance(obj, dict) else None
         cur.execute("""
             INSERT INTO observations (station_id, ts, param, value, unit, raw_json)
             VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (station_id, ts, param) DO NOTHING
         """, (station_id, ts, param, value, unit, Json(raw)))
+    
+    # Update station with latest params and time
+    cur.execute("""
+        UPDATE stations 
+        SET params = %s::jsonb, last_update = %s 
+        WHERE station_id = %s
+    """, (json.dumps(iaqi), ts, station_id))
+    
     conn.commit()
     cur.close(); conn.close()
 
@@ -81,4 +117,5 @@ def main(limit=None):
             print("inserted:", station_id, list(iaqi.keys()))
 
 if __name__ == "__main__":
-    main(limit=10)   # try for 10 first
+    # main(limit=10)   # try for 10 first
+    main() # Run for all stations
