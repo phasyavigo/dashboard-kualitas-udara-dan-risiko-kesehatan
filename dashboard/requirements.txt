@@ -1,0 +1,7 @@
+dash
+dash-leaflet
+pandas
+requests
+plotly
+gunicorn
+dash-extensions

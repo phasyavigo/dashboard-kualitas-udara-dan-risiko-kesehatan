@@ -17,7 +17,7 @@ services:
       - "6379:6379"
 
   backend:
-    build: .
+    build: ./backend
     depends_on:
       - postgres
       - redis
@@ -31,7 +31,38 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - ./backend:/app
+
+  dashboard:
+    build: ./dashboard
+    depends_on:
+      - backend
+    environment:
+      API_INTERNAL_URL: http://backend:8000
+      API_PUBLIC_URL: http://localhost:8000
+      AQICN_TOKEN: ${AQICN_TOKEN}
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./dashboard:/app
+
+  worker:
+    build: ./worker
+    command: python scheduler.py
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: airdb
+      PGUSER: air
+      PGPASSWORD: airpass
+      REDIS_URL: redis://redis:6379
+      # Ensure API Token is passed if needed by scripts
+      AQICN_TOKEN: ${AQICN_TOKEN}
+    volumes:
+      - ./worker:/app
 
 volumes:
   postgres_data:
