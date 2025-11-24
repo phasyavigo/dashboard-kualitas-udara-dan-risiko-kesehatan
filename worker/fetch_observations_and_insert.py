@@ -23,7 +23,7 @@ try:
         file.close()
     TOKEN = secrets.get("aqicn-api-key")
 except FileNotFoundError:
-    TOKEN = os.environ.get("AQICN_TOKEN")
+    TOKEN = os.environ.get("AQICN_TOKEN", "")
 
 if not TOKEN:
     print("Error: No AQICN Token found in secrets.json or environment variables.")
@@ -151,11 +151,15 @@ def insert_observations(station_id, ts, iaqi, raw):
     
     # Insert AQI as a special parameter
     if aqi_value is not None:
-        cur.execute("""
-            INSERT INTO observations (station_id, ts, param, value, raw_json)
-            VALUES (%s, %s, 'aqi', %s, %s)
-            ON CONFLICT (station_id, ts, param) DO NOTHING
-        """, (station_id, ts, float(aqi_value), Json(raw)))
+        try:
+            aqi_float = float(aqi_value)
+            cur.execute("""
+                INSERT INTO observations (station_id, ts, param, value, raw_json)
+                VALUES (%s, %s, 'aqi', %s, %s)
+                ON CONFLICT (station_id, ts, param) DO NOTHING
+            """, (station_id, ts, aqi_float, Json(raw)))
+        except ValueError:
+            print(f"Skipping invalid AQI value: {aqi_value} for station {station_id}")
     
     # Insert dominant pollutant as a text parameter (store as numeric 1.0 for compatibility)
     # We'll store the actual pollutant name in unit field

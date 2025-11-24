@@ -73,15 +73,8 @@ def populate_stations():
     # If file doesn't exist, maybe fetch it? For now assume it exists or we run fetch script.
     # We will try to read 'stations_indonesia.json' which is created by fetch_stations_and_city.py
     
-    filename = "stations_indonesia.json"
-    if not os.path.exists(filename):
-        print(f"{filename} not found. Please run fetch_stations_and_city.py first.")
-        # Attempt to run fetch script?
-        import subprocess
-        print("Running fetch_stations_and_city.py...")
-        subprocess.run(["python", "fetch_stations_and_city.py"], check=True)
     
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open('stations_indonesia.json', 'r', encoding='utf-8') as f:
         stations = json.load(f)
         
     conn = get_connection()
