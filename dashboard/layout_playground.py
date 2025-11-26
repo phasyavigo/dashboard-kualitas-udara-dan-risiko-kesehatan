@@ -22,10 +22,10 @@ DEFAULT_ZOOM = 4
 
 # Updated Color Palette - Design System
 COLORS = {
-    "Good": "#44CC77",                         # teal
-    "Moderate": "#FFBB02",                     # orange
-    "Unhealthy": "#E2334B",                    
-    "Hazardous": "#9C54E9",                  
+    "Good": "#76F0A9",                         # teal
+    "Moderate": "#F59964",                     # orange
+    "Unhealthy": "#F87064",                    
+    "Hazardous": "#7E9FF0",                  
 }
 
 # WHO Thresholds (24h mean guidelines approx)
@@ -296,7 +296,8 @@ app.layout = html.Div([
 ], style={
     'padding': '20px',
     'backgroundColor': '#1E2631',
-    'minHeight': '100vh'
+    'minHeight': '100vh',
+    'fontFamily': '"Montserrat", sans-serif'
 })
 
 # Interval Component for Auto-Refresh
@@ -433,6 +434,167 @@ def update_side_panel(data, n):
             html.P("Click any marker to view detailed analytics", style={'color': '#616A6B', 'textAlign': 'center'})
         ], style={'height': '100%'})
 
+    # --- Data (mock or real upstream) ---
+    # gunakan generate_mock_* atau get_timeseries/get_forecast sesuai kebutuhan
+    df_trend = generate_mock_timeseries()
+    forecast = generate_mock_forecast()
+
+    # Ambil nilai polutan dari data['bala baslbdasbdoa'] jika ada, fallback jika tidak
+    pol = data.get("bala baslbdasbdoa", {}) or {}
+    pm25_val = pol.get("pm25")
+    pm10_val = pol.get("pm10")
+    o3_val = pol.get("o3")
+    no2_val = pol.get("no2")
+
+    # fallback: pakai nilai terakhir timeseries untuk PM2.5 jika tidak tersedia
+    if pm25_val is None:
+        if not df_trend.empty:
+            pm25_val = round(df_trend['value'].iloc[-1], 2)
+        else:
+            pm25_val = 0
+    pm10_val = pm10_val if pm10_val is not None else 0
+    o3_val = o3_val if o3_val is not None else 0
+    no2_val = no2_val if no2_val is not None else 0
+
+    # --- Trend Chart ---
+    # ubah judul menjadi "PM 2.5 ..." dan buat tebal melalui font
+    fig_trend = px.area(df_trend, x="ts", y="value", title="PM 2.5 Trend (Last 7 Days)")
+    fig_trend.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=24, r=20, t=40, b=40),  # l=24 agar sejajar dengan nama stasiun (sesuaikan jika perlu)
+        height=250,
+        title=dict(font=dict(size=14, color='#ECF0F1', family="'Helvetica Neue', Helvetica, Arial, sans-serif"), x=0),  # x=0 to left align
+        xaxis_title=None,
+        yaxis_title="µg/m³"
+    )
+    # garis threshold WHO
+    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="dash", line_color="#FFEB3B",
+                        annotation_text="WHO Limit", annotation_position="top left")
+
+    # --- Forecast cards (sama seperti sebelumnya) ---
+    forecast_html = []
+    for day in forecast:
+        forecast_html.append(html.Div([
+            html.Div(day["day"], style={'fontWeight': '700', 'marginBottom': '6px', 'color': '#ECF0F1'}),
+            html.Div(f"{day['avg']}", style={'fontSize': '1.1rem', 'fontWeight': '800', 'color': '#FFD54F'}),
+            html.Div("PM2.5 (avg)", style={'fontSize': '0.7rem', 'color': '#95A5A6'})
+        ], style={'backgroundColor': '#122021', 'padding': '10px', 'borderRadius': '6px', 'textAlign': 'center', 'flex': '1'}))
+
+    # --- Pollutant small cards (arranged horizontally) ---
+    pollutant_cards = html.Div([
+        # PM 2.5
+        html.Div([
+            html.Div("PM 2.5", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm25_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # PM10
+        html.Div([
+            html.Div("PM10", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm10_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # O3
+        html.Div([
+            html.Div("O3", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{o3_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # NO2
+        html.Div([
+            html.Div("NO2", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{no2_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'})
+    ], style={'display': 'flex', 'gap': '8px', 'marginTop': '10px', 'marginBottom': '12px'})
+
+    # --- Header: name (left) and current AQI (right, aligned horizontally) ---
+    # --- Header: nama (kiri) dan AQI box (kanan, label di dalam & centered) ---
+    header = html.Div([
+        # Left: station name + city (lebih besar)
+        html.Div([
+            html.Div(
+                data.get("name", "Unknown Station"),
+                style={
+                    'margin': '0',
+                    'color': '#ECF0F1',
+                    'fontSize': '1.6rem',
+                    'fontWeight': '800',
+                    'lineHeight': '1',
+                    'paddingTop': '10px'   # <-- dorong sedikit ke bawah agar sejajar dengan top AQI box
+                }
+            ),
+            html.Div(
+                data.get('city', ''),
+                style={
+                    'margin': '4px 0 0 0',
+                    'color': '#95A5A6',
+                    'fontSize': '0.95rem',
+                    'paddingTop': '2px'
+                }
+            )
+        ], style={'flex': '1', 'paddingLeft': '8px'}),
+
+        # Right: AQI card with label inside, centered
+        html.Div([
+            html.Div([
+                html.Div("AQI", style={
+                    'fontSize': '0.8rem',
+                    'color': '#F7F7F7',
+                    'opacity': 0.95,
+                    'marginBottom': '6px',
+                    'textAlign': 'center'
+                }),
+                html.Div(str(data.get('aqi', '-')), style={
+                    'fontSize': '2.2rem',
+                    'fontWeight': '900',
+                    'lineHeight': '1',
+                })
+            ], style={
+                'display': 'flex',
+                'flexDirection': 'column',
+                'alignItems': 'center',
+                'justifyContent': 'center',
+                'padding': '10px 14px',
+                'minWidth': '86px',
+                'minHeight': '64px',
+                'borderRadius': '10px',
+                'background': COLORS.get(data.get('category'), '#E74C3C'),
+                'color': '#ffffff',
+                'boxShadow': '0 4px 10px rgba(0,0,0,0.25)'
+            })
+        ], style={'display': 'flex', 'alignItems': 'flex-start', 'justifyContent': 'flex-end'})  # <-- align ke atas
+
+    ], style={
+        'display': 'flex',
+        'alignItems': 'flex-start',   # <-- semua item akan menempel ke atas container
+        'gap': '16px',
+        'marginBottom': '8px',
+        'borderBottom': '1px solid #223033',
+        'paddingBottom': '12px'
+    })
+
+
+    return html.Div([
+        header,
+        # pollutant cards under header
+        pollutant_cards,
+        # Trend graph (left-aligned because fig margin l matches header paddingLeft)
+        dcc.Graph(figure=fig_trend, config={'displayModeBar': False}),
+        # Forecast
+        html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'color': '#BDC3C7'}),
+        html.Div(forecast_html, style={'display': 'flex', 'gap': '8px'}),
+        html.Div([
+            html.P("Source: Static Mock Data", style={'fontSize': '0.8rem', 'color': '#7F8C8D', 'marginTop': '16px'})
+        ])
+    ])
+    if not data:
+        return html.Div([
+            html.H3("Select a station on the map", style={'color': '#7F8C8D', 'textAlign': 'center', 'marginTop': '40%'}),
+            html.P("Click any marker to view detailed analytics", style={'color': '#616A6B', 'textAlign': 'center'})
+        ], style={'height': '100%'})
+
     df_trend = generate_mock_timeseries()
     forecast = generate_mock_forecast()
 
@@ -492,71 +654,122 @@ def update_tabs(tab):
     features = geojson["features"]
 
     if tab == 'tab-overview':
+        # Precompute
         aqi_vals = [f["properties"].get("aqi", 0) for f in features]
         categories = [f["properties"].get("category", "Unknown") for f in features]
-        
+
         from collections import Counter
         cat_counts = Counter(categories)
-        
-        fig_hist = go.Figure()
-        fig_hist.add_trace(go.Histogram(
-            x=aqi_vals,
-            nbinsx=25,
-            marker=dict(
-                color=aqi_vals,
-                colorscale=[[0, '#43A047'], [0.3, '#FFC107'], [0.6, '#FF8A65'], [1, '#E53935']],
-                line=dict(color='rgba(255,255,255,0.2)', width=1)
-            ),
-            name='AQI Distribution'
-        ))
-        fig_hist.update_layout(
-            template="plotly_dark",
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            height=280,
-            title=dict(text="Nationwide AQI Distribution", font=dict(size=16, color='#ECF0F1')),
-            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.05)'),
-            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.05)'),
-            margin=dict(l=40, r=20, t=40, b=40)
-        )
-        
-        fig_pie = go.Figure(data=[go.Pie(
-            labels=list(cat_counts.keys()),
-            values=list(cat_counts.values()),
-            marker=dict(colors=[COLORS.get(cat, COLORS["Moderate"]) for cat in cat_counts.keys()]),
-            hole=0.4,
-            textposition='inside',
-            textinfo='percent+label'
-        )])
-        fig_pie.update_layout(
-            template="plotly_dark",
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            height=280,
-            title=dict(text="Category Breakdown", font=dict(size=16, color='#ECF0F1')),
-            showlegend=False,
-            margin=dict(l=20, r=20, t=40, b=20)
-        )
-        
+
+        # KPI / stats cards (top)
         avg_aqi = round(sum(aqi_vals)/len(aqi_vals), 1) if aqi_vals else 0
         median_aqi = sorted(aqi_vals)[len(aqi_vals)//2] if aqi_vals else 0
         max_aqi = max(aqi_vals) if aqi_vals else 0
 
         stats_cards = html.Div([
             html.Div([
-                html.Div("Average AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{avg_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#3498DB'})
-            ], style={'background': 'rgba(52,152,219,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(52,152,219,0.3)'}),
+                html.Div("AVERAGE AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{avg_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#53B0F0'})
+            ], style={'background': 'rgba(83,176,240,0.06)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(83,176,240,0.12)'}),
             html.Div([
-                html.Div("Median AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{median_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#2ECC71'})
-            ], style={'background': 'rgba(46,204,113,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(46,204,113,0.3)'}),
+                html.Div("MEDIAN AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{median_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#49C46E'})
+            ], style={'background': 'rgba(73,196,110,0.05)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(73,196,110,0.08)'}),
             html.Div([
-                html.Div("Max AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{max_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#E74C3C'})
-            ], style={'background': 'rgba(231,76,60,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(231,76,60,0.3)'})
-        ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '16px'})
-        
+                html.Div("MAX AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{max_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#F06B6B'})
+            ], style={'background': 'rgba(240,107,107,0.04)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(240,107,107,0.10)'})
+        ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '18px'})
+
+        # Histogram (left)
+        fig_hist = go.Figure()
+        fig_hist.add_trace(go.Histogram(
+            x=aqi_vals,
+            nbinsx=25,
+            marker=dict(
+                line=dict(color='rgba(255,255,255,0.03)', width=1)
+            ),
+            showlegend=False
+        ))
+        fig_hist.update_traces(marker=dict(
+            color=aqi_vals,
+            colorscale=[[0, '#F87064'], [0.33, '#F59964'], [0.66, '#76F0A9'], [1, '#7E9FF0']],
+            showscale=False
+        ))
+        fig_hist.update_layout(
+            template="plotly_dark",
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=360,
+            title=dict(text="Nationwide AQI Distribution", font=dict(size=18, color='#ECF0F1'), x=0),
+            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.04)'),
+            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.04)'),
+            margin=dict(l=12, r=12, t=40, b=40)
+        )
+
+        # Donut pie (right)
+        labels = list(cat_counts.keys())
+        values = [cat_counts[k] for k in labels]
+        pie_colors = [COLORS.get(k, COLORS["Moderate"]) for k in labels]
+
+        fig_pie = go.Figure(data=[go.Pie(
+            labels=labels,
+            values=values,
+            hole=0.45,
+            marker=dict(colors=pie_colors, line=dict(color='rgba(0,0,0,0.12)', width=1)),
+            textinfo='percent',
+            textposition='inside',
+            textfont=dict(color='#FFFFFF', size=14, family='Arial'),
+            hoverinfo='label+value+percent',
+            sort=False
+        )])
+        fig_pie.update_layout(
+            showlegend=False,
+            margin=dict(l=10, r=10, t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=320
+        )
+
+        # Custom legend beside pie
+        legend_items = []
+        # Keep stable ordering: Good, Moderate, Unhealthy, Hazardous if present
+        preferred_order = ["Good", "Moderate", "Unhealthy", "Hazardous"]
+        ordered_labels = [l for l in preferred_order if l in labels] + [l for l in labels if l not in preferred_order]
+        for lab in ordered_labels:
+            color = COLORS.get(lab, COLORS["Moderate"])
+            count = cat_counts.get(lab, 0)
+            pct = f"{(count / sum(values) * 100):.1f}%" if sum(values) > 0 else "0%"
+            legend_items.append(
+                html.Div([
+                    html.Div(style={
+                        'width': '12px', 'height': '12px', 'borderRadius': '50%',
+                        'background': color, 'marginRight': '10px', 'flex': '0 0 auto'
+                    }),
+                    html.Div([
+                        html.Div(lab, style={'color': '#ECF0F1', 'fontSize': '0.95rem', 'marginBottom': '2px'}),
+                        html.Div(pct, style={'color': '#95A5A6', 'fontSize': '0.82rem'})
+                    ])
+                ], style={'display': 'flex', 'alignItems': 'center', 'gap': '8px', 'marginBottom': '12px'})
+            )
+
+        legend_column = html.Div(legend_items, style={'display': 'flex', 'flexDirection': 'column', 'paddingLeft': '10px'})
+
+        # Compose left + right sections
+        left_section = html.Div([
+            # Title is already inside fig_hist, but add spacing & alignment
+            html.Div(dcc.Graph(figure=fig_hist, config={'displayModeBar': False}), style={'width': '100%'})
+        ], style={'flex': '2', 'minWidth': '560px'})
+
+        right_section = html.Div([
+            html.Div("Category Breakdown", style={'color': '#ECF0F1', 'fontSize': '1.5rem', 'fontWeight': '800', 'marginBottom': '12px'}),
+            html.Div(dcc.Graph(figure=fig_pie, config={'displayModeBar': False}), style={'maxWidth': '360px'}),
+            html.Div(legend_column, style={'marginTop': '8px'})
+        ], style={'flex': '1', 'minWidth': '260px', 'display': 'flex', 'flexDirection': 'column', 'alignItems': 'flex-start'})
+
+        middle_row = html.Div([left_section, right_section], style={'display': 'flex', 'gap': '24px', 'alignItems': 'flex-start', 'marginBottom': '18px'})
+
+        # Top 5 with cards
         sorted_aqi = sorted(features, key=lambda x: x["properties"].get("aqi", 0), reverse=True)[:5]
         top5_cards = []
         for i, f in enumerate(sorted_aqi):
@@ -594,18 +807,23 @@ def update_tabs(tab):
                 'border': f'1px solid {badge_color}33',
                 'boxShadow': f'0 4px 8px {badge_color}22'
             }))
-        
-        return html.Div([
+
+        # Top-level wrapper
+        container = html.Div([
             stats_cards,
+            middle_row,
             html.Div([
-                html.Div([dcc.Graph(figure=fig_hist, config={'displayModeBar': False})], style={'flex': '1.5', 'minWidth': '300px'}),
-                html.Div([dcc.Graph(figure=fig_pie, config={'displayModeBar': False})], style={'flex': '1', 'minWidth': '250px'})
-            ], style={'display': 'flex', 'gap': '16px', 'flexWrap': 'wrap', 'marginBottom': '16px'}),
-            html.Div([
-                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.1rem'}),
+                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.05rem'}),
                 html.Div(top5_cards)
-            ])
-        ])
+            ], style={'marginTop': '6px'})
+        ], style={
+            'backgroundColor': '#1E2631',
+            'padding': '20px',
+            'borderRadius': '12px',
+            'boxShadow': '0 6px 18px rgba(0,0,0,0.35)'
+        })
+
+        return container
 
     elif tab == 'tab-table':
         data = []
@@ -744,7 +962,6 @@ def update_tabs(tab):
                 )
             ])
         ])
-
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8050)

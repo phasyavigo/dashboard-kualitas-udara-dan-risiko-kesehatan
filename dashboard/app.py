@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import numpy as np
+from collections import Counter
 
 # Load environment variables
 load_dotenv()
@@ -18,8 +19,6 @@ load_dotenv()
 AQICN_TOKEN = os.environ.get("AQICN_TOKEN", "")
 MAPBOX_ACCESS_TOKEN = os.environ.get("MAPBOX_ACCESS_TOKEN", "")
 
-# API URLs (Preserved for future integration)
-# Currently using Mock Data to ensure visual fidelity until backend supports full AQI data
 API_INTERNAL_URL = os.environ.get("API_INTERNAL_URL", "http://backend:8000")
 API_PUBLIC_URL = os.environ.get("API_PUBLIC_URL", "http://localhost:8000")
 
@@ -50,26 +49,11 @@ THRESHOLDS = {
 app = dash.Dash(__name__, title="Air Quality Dashboard")
 server = app.server
 
-# --- MOCK Data Generators ---
-# NOTE: These are used to populate the dashboard with realistic looking data
-# because the current backend endpoints do not yet return live AQI/PM2.5 values
-# for all stations in the GeoJSON response.
 
-def get_aqi_category(pm25_value):
-    if pm25_value <= 15.4:
-        return "Good"
-    elif pm25_value <= 55.4:
-        return "Moderate"
-    elif pm25_value <= 150.4:
-        return "Unhealthy"
-    elif pm25_value <= 250.4:
-        return "Hazardous"
-    else:
-        return "Unknown"
 
 
 def get_timeseries(station_id, param="pm25", days=7):
-    """Fetch Timeseries Data (Real with Mock Fallback)"""
+    """Fetch Timeseries Data"""
     # Try fetching real data
     try:
         url = f"{API_INTERNAL_URL}/timeseries/{station_id}/{param}"
@@ -87,23 +71,11 @@ def get_timeseries(station_id, param="pm25", days=7):
     except Exception as e:
         print(f"Error fetching timeseries for {station_id}: {e}")
 
-    # Fallback to Mock Data
-    now = datetime.now()
-    data = []
-    hours = days * 24
-    base_val = random.uniform(20, 80)
-    for i in range(hours):
-        ts = now - timedelta(hours=i)
-        # Add some random noise and daily cycle
-        val = base_val + 10 * np.sin(i / 12 * np.pi) + random.uniform(-5, 5)
-        val = max(0, val) # Ensure no negative
-        data.append({"ts": ts.isoformat(), "value": round(val, 2)})
-    df = pd.DataFrame(data)
-    df['ts'] = pd.to_datetime(df['ts'])
-    return df.sort_values('ts')
+    # Return empty DataFrame on failure
+    return pd.DataFrame(columns=['ts', 'value'])
 
 def get_forecast(station_id):
-    """Fetch 5-day Forecast (Real with Mock Fallback)"""
+    """Fetch 5-day Forecast"""
     # Try fetching real data
     try:
         url = f"{API_INTERNAL_URL}/forecast/{station_id}"
@@ -116,18 +88,7 @@ def get_forecast(station_id):
     except Exception as e:
         print(f"Error fetching forecast for {station_id}: {e}")
 
-    # Fallback to Mock Data
-    today = datetime.now().date()
-    forecast = []
-    for i in range(5):
-        day = today + timedelta(days=i)
-        forecast.append({
-            "day": day.strftime("%a"),
-            "min": random.randint(10, 30),
-            "max": random.randint(40, 100),
-            "avg": random.randint(30, 70)
-        })
-    return forecast
+    return []
 
 # --- Layout Helper Components ---
 
@@ -213,7 +174,7 @@ app.layout = html.Div([
                 'fontSize': '0.9rem',
                 'textAlign': 'right'
             }),
-            html.Div("Data Source: Mock API", style={
+            html.Div("Data Source: Real-time API", style={
                 'fontSize': '0.75rem',
                 'color': '#7F8C8D',
                 'textAlign': 'right',
@@ -317,7 +278,8 @@ app.layout = html.Div([
 ], style={
     'padding': '20px',
     'backgroundColor': '#1E2631',
-    'minHeight': '100vh'
+    'minHeight': '100vh',
+    'fontFamily': '"Montserrat", sans-serif'
 })
 
 # Interval Component for Auto-Refresh
@@ -345,11 +307,11 @@ def update_dashboard_data(n):
             geojson = response.json()
             print(f"✅ Using REAL data from backend - {len(geojson.get('features', []))} stations")
         else:
-            print(f"⚠️  Backend returned {response.status_code} - Using MOCK data")
-            geojson = MOCK_GEOJSON
+            print(f"⚠️  Backend returned {response.status_code}")
+            geojson = {"type": "FeatureCollection", "features": []}
     except Exception as e:
-        print(f"❌ Error fetching from backend: {e} - Using MOCK data")
-        geojson = MOCK_GEOJSON
+        print(f"❌ Error fetching from backend: {e}")
+        geojson = {"type": "FeatureCollection", "features": []}
 
     features = geojson["features"]
     
@@ -480,18 +442,34 @@ def update_side_panel(data, n):
         ], style={'height': '100%'})
 
     station_id = data["station_id"]
-    # Mock Data Fetch
+    # Fetch Data
     df_trend = get_timeseries(station_id)
     forecast = get_forecast(station_id)
 
+    # Fetch Latest Pollutants
+    pm25_val, pm10_val, o3_val, no2_val = 0, 0, 0, 0
+    try:
+        resp = requests.get(f"{API_INTERNAL_URL}/latest/{station_id}", timeout=5)
+        if resp.status_code == 200:
+            latest = resp.json().get("latest", {})
+            pm25_val = latest.get("pm25", {}).get("value", 0)
+            pm10_val = latest.get("pm10", {}).get("value", 0)
+            o3_val = latest.get("o3", {}).get("value", 0)
+            no2_val = latest.get("no2", {}).get("value", 0)
+    except Exception as e:
+        print(f"Error fetching latest for {station_id}: {e}")
+        # Fallback
+        pm25_val = data.get("pm25", 0)
+
     # Trend Chart
-    fig_trend = px.area(df_trend, x="ts", y="value", title="PM2.5 Trend (Last 7 Days)")
+    fig_trend = px.area(df_trend, x="ts", y="value", title="PM 2.5 Trend (Last 7 Days)")
     fig_trend.update_layout(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=40, r=20, t=40, b=40),
+        margin=dict(l=24, r=20, t=40, b=40),
         height=250,
+        title=dict(font=dict(size=14, color='#ECF0F1', family='"Montserrat", sans-serif'), x=0),
         xaxis_title=None,
         yaxis_title="µg/m³"
     )
@@ -506,35 +484,97 @@ def update_side_panel(data, n):
             html.Div("PM2.5 (avg)", style={'fontSize': '0.7rem', 'color': '#95A5A6'})
         ], style={'backgroundColor': '#122021', 'padding': '10px', 'borderRadius': '6px', 'textAlign': 'center', 'flex': '1'}))
 
+    # Pollutant small cards
+    pollutant_cards = html.Div([
+        html.Div([
+            html.Div("PM 2.5", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm25_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+        html.Div([
+            html.Div("PM10", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm10_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+        html.Div([
+            html.Div("O3", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{o3_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+        html.Div([
+            html.Div("NO2", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{no2_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'})
+    ], style={'display': 'flex', 'gap': '8px', 'marginTop': '10px', 'marginBottom': '12px'})
+
+    # Header
+    header = html.Div([
+        html.Div([
+            html.Div(
+                data.get("name", "Unknown Station"),
+                style={
+                    'margin': '0',
+                    'color': '#ECF0F1',
+                    'fontSize': '1.6rem',
+                    'fontWeight': '800',
+                    'lineHeight': '1',
+                    'paddingTop': '10px'
+                }
+            ),
+            html.Div(
+                data.get('city', ''),
+                style={
+                    'margin': '4px 0 0 0',
+                    'color': '#95A5A6',
+                    'fontSize': '0.95rem',
+                    'paddingTop': '2px'
+                }
+            )
+        ], style={'flex': '1', 'paddingLeft': '8px'}),
+
+        html.Div([
+            html.Div([
+                html.Div("AQI", style={
+                    'fontSize': '0.8rem',
+                    'color': '#F7F7F7',
+                    'opacity': 0.95,
+                    'marginBottom': '6px',
+                    'textAlign': 'center'
+                }),
+                html.Div(str(data.get('aqi', '-')), style={
+                    'fontSize': '2.2rem',
+                    'fontWeight': '900',
+                    'lineHeight': '1',
+                })
+            ], style={
+                'display': 'flex',
+                'flexDirection': 'column',
+                'alignItems': 'center',
+                'justifyContent': 'center',
+                'padding': '10px 14px',
+                'minWidth': '86px',
+                'minHeight': '64px',
+                'borderRadius': '10px',
+                'background': COLORS.get(data.get('category'), '#E74C3C'),
+                'color': '#ffffff',
+                'boxShadow': '0 4px 10px rgba(0,0,0,0.25)'
+            })
+        ], style={'display': 'flex', 'alignItems': 'flex-start', 'justifyContent': 'flex-end'})
+
+    ], style={
+        'display': 'flex',
+        'alignItems': 'flex-start',
+        'gap': '16px',
+        'marginBottom': '8px',
+        'borderBottom': '1px solid #223033',
+        'paddingBottom': '12px'
+    })
+
     return html.Div([
-        # Header
-        html.Div([
-            html.H1(data["name"], style={'margin': '0', 'color': '#ECF0F1'}),
-            html.P(f"{data['city']} • {data['category']}", style={'margin': '0', 'color': COLORS.get(data['category'], '#fff')})
-        ], style={'marginBottom': '12px', 'borderBottom': '1px solid #223033', 'paddingBottom': '10px'}),
-
-        # Current Status
-        html.Div([
-            html.Div([
-                html.Div("Current AQI", style={'display': 'block', 'fontSize': '0.8rem', 'color': '#95A5A6'}),
-                html.Div(f"{data['aqi']}", style={'fontSize': '2.2rem', 'fontWeight': '800', 'color': COLORS.get(data['category'], '#fff')})
-            ], style={'flex': '1'}),
-            html.Div([
-                html.Div("Dominant Pollutant", style={'display': 'block', 'fontSize': '0.8rem', 'color': '#95A5A6'}),
-                html.Div("PM2.5", style={'fontSize': '1.1rem', 'fontWeight': '700', 'color': '#ECF0F1'})
-            ], style={'flex': '1', 'textAlign': 'right'})
-        ], style={'display': 'flex', 'marginBottom': '14px'}),
-
-        # Trend Graph
+        header,
+        pollutant_cards,
         dcc.Graph(figure=fig_trend, config={'displayModeBar': False}),
-
-        # Forecast
         html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'color': '#BDC3C7'}),
         html.Div(forecast_html, style={'display': 'flex', 'gap': '8px'}),
-
-        # Attribution
         html.Div([
-            html.P("Source: Mock EPA Data", style={'fontSize': '0.8rem', 'color': '#7F8C8D', 'marginTop': '16px'})
+            html.P("Source: Real-time API", style={'fontSize': '0.8rem', 'color': '#7F8C8D', 'marginTop': '16px'})
         ])
     ])
 
@@ -549,84 +589,125 @@ def update_tabs(tab):
         if response.status_code == 200:
             geojson = response.json()
         else:
-            geojson = MOCK_GEOJSON # Fallback
+            geojson = {"type": "FeatureCollection", "features": []}
     except Exception:
-        geojson = MOCK_GEOJSON # Fallback
+        geojson = {"type": "FeatureCollection", "features": []}
 
     features = geojson["features"]
 
     if tab == 'tab-overview':
-        # Prepare data
+        # Precompute
         aqi_vals = [f["properties"].get("aqi", 0) for f in features]
-        pm25_vals = [f["properties"].get("pm25", 0) for f in features]
         categories = [f["properties"].get("category", "Unknown") for f in features]
-        
-        # Category distribution (pie/bar)
-        from collections import Counter
+
         cat_counts = Counter(categories)
-        
-        # Histogram with better styling
-        fig_hist = go.Figure()
-        fig_hist.add_trace(go.Histogram(
-            x=aqi_vals,
-            nbinsx=25,
-            marker=dict(
-                color=aqi_vals,
-                colorscale=[[0, '#43A047'], [0.3, '#FFC107'], [0.6, '#FF8A65'], [1, '#E53935']],
-                line=dict(color='rgba(255,255,255,0.2)', width=1)
-            ),
-            name='AQI Distribution'
-        ))
-        fig_hist.update_layout(
-            template="plotly_dark",
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            height=280,
-            title=dict(text="Nationwide AQI Distribution", font=dict(size=16, color='#ECF0F1')),
-            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.05)'),
-            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.05)'),
-            margin=dict(l=40, r=20, t=40, b=40)
-        )
-        
-        # Category breakdown pie chart
-        fig_pie = go.Figure(data=[go.Pie(
-            labels=list(cat_counts.keys()),
-            values=list(cat_counts.values()),
-            marker=dict(colors=[COLORS.get(cat, COLORS["Moderate"]) for cat in cat_counts.keys()]),
-            hole=0.4,
-            textposition='inside',
-            textinfo='percent+label'
-        )])
-        fig_pie.update_layout(
-            template="plotly_dark",
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            height=280,
-            title=dict(text="Category Breakdown", font=dict(size=16, color='#ECF0F1')),
-            showlegend=False,
-            margin=dict(l=20, r=20, t=40, b=20)
-        )
-        
-        # Statistics cards
+
+        # KPI / stats cards (top)
         avg_aqi = round(sum(aqi_vals)/len(aqi_vals), 1) if aqi_vals else 0
         median_aqi = sorted(aqi_vals)[len(aqi_vals)//2] if aqi_vals else 0
         max_aqi = max(aqi_vals) if aqi_vals else 0
 
         stats_cards = html.Div([
             html.Div([
-                html.Div("Average AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{avg_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#3498DB'})
-            ], style={'background': 'rgba(52,152,219,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(52,152,219,0.3)'}),
+                html.Div("AVERAGE AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{avg_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#53B0F0'})
+            ], style={'background': 'rgba(83,176,240,0.06)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(83,176,240,0.12)'}),
             html.Div([
-                html.Div("Median AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{median_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#2ECC71'})
-            ], style={'background': 'rgba(46,204,113,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(46,204,113,0.3)'}),
+                html.Div("MEDIAN AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{median_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#49C46E'})
+            ], style={'background': 'rgba(73,196,110,0.05)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(73,196,110,0.08)'}),
             html.Div([
-                html.Div("Max AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
-                html.Div(f"{max_aqi}", style={'fontSize': '1.8rem', 'fontWeight': '800', 'color': '#E74C3C'})
-            ], style={'background': 'rgba(231,76,60,0.1)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(231,76,60,0.3)'})
-        ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '16px'})
-        
+                html.Div("MAX AQI", style={'fontSize': '0.75rem', 'color': '#95A5A6', 'textTransform': 'uppercase'}),
+                html.Div(f"{max_aqi}", style={'fontSize': '1.6rem', 'fontWeight': '800', 'color': '#F06B6B'})
+            ], style={'background': 'rgba(240,107,107,0.04)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(240,107,107,0.10)'})
+        ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '18px'})
+
+        # Histogram (left)
+        fig_hist = go.Figure()
+        fig_hist.add_trace(go.Histogram(
+            x=aqi_vals,
+            nbinsx=25,
+            marker=dict(
+                line=dict(color='rgba(255,255,255,0.03)', width=1)
+            ),
+            showlegend=False
+        ))
+        fig_hist.update_traces(marker=dict(
+            color=aqi_vals,
+            colorscale=[[0, '#F87064'], [0.33, '#F59964'], [0.66, '#76F0A9'], [1, '#7E9FF0']],
+            showscale=False
+        ))
+        fig_hist.update_layout(
+            template="plotly_dark",
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=360,
+            title=dict(text="Nationwide AQI Distribution", font=dict(size=18, color='#ECF0F1'), x=0),
+            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.04)'),
+            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.04)'),
+            margin=dict(l=12, r=12, t=40, b=40)
+        )
+
+        # Donut pie (right)
+        labels = list(cat_counts.keys())
+        values = [cat_counts[k] for k in labels]
+        pie_colors = [COLORS.get(k, COLORS["Moderate"]) for k in labels]
+
+        fig_pie = go.Figure(data=[go.Pie(
+            labels=labels,
+            values=values,
+            hole=0.45,
+            marker=dict(colors=pie_colors, line=dict(color='rgba(0,0,0,0.12)', width=1)),
+            textinfo='percent',
+            textposition='inside',
+            textfont=dict(color='#FFFFFF', size=14, family='Arial'),
+            hoverinfo='label+value+percent',
+            sort=False
+        )])
+        fig_pie.update_layout(
+            showlegend=False,
+            margin=dict(l=10, r=10, t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=320
+        )
+
+        # Custom legend beside pie
+        legend_items = []
+        preferred_order = ["Good", "Moderate", "Unhealthy", "Hazardous"]
+        ordered_labels = [l for l in preferred_order if l in labels] + [l for l in labels if l not in preferred_order]
+        for lab in ordered_labels:
+            color = COLORS.get(lab, COLORS["Moderate"])
+            count = cat_counts.get(lab, 0)
+            pct = f"{(count / sum(values) * 100):.1f}%" if sum(values) > 0 else "0%"
+            legend_items.append(
+                html.Div([
+                    html.Div(style={
+                        'width': '12px', 'height': '12px', 'borderRadius': '50%',
+                        'background': color, 'marginRight': '10px', 'flex': '0 0 auto'
+                    }),
+                    html.Div([
+                        html.Div(lab, style={'color': '#ECF0F1', 'fontSize': '0.95rem', 'marginBottom': '2px'}),
+                        html.Div(pct, style={'color': '#95A5A6', 'fontSize': '0.82rem'})
+                    ])
+                ], style={'display': 'flex', 'alignItems': 'center', 'gap': '8px', 'marginBottom': '12px'})
+            )
+
+        legend_column = html.Div(legend_items, style={'display': 'flex', 'flexDirection': 'column', 'paddingLeft': '10px'})
+
+        # Compose left + right sections
+        left_section = html.Div([
+            html.Div(dcc.Graph(figure=fig_hist, config={'displayModeBar': False}), style={'width': '100%'})
+        ], style={'flex': '2', 'minWidth': '560px'})
+
+        right_section = html.Div([
+            html.Div("Category Breakdown", style={'color': '#ECF0F1', 'fontSize': '1.5rem', 'fontWeight': '800', 'marginBottom': '12px'}),
+            html.Div(dcc.Graph(figure=fig_pie, config={'displayModeBar': False}), style={'maxWidth': '360px'}),
+            html.Div(legend_column, style={'marginTop': '8px'})
+        ], style={'flex': '1', 'minWidth': '260px', 'display': 'flex', 'flexDirection': 'column', 'alignItems': 'flex-start'})
+
+        middle_row = html.Div([left_section, right_section], style={'display': 'flex', 'gap': '24px', 'alignItems': 'flex-start', 'marginBottom': '18px'})
+
         # Top 5 with cards
         sorted_aqi = sorted(features, key=lambda x: x["properties"].get("aqi", 0), reverse=True)[:5]
         top5_cards = []
@@ -665,18 +746,20 @@ def update_tabs(tab):
                 'border': f'1px solid {badge_color}33',
                 'boxShadow': f'0 4px 8px {badge_color}22'
             }))
-        
+
         return html.Div([
             stats_cards,
+            middle_row,
             html.Div([
-                html.Div([dcc.Graph(figure=fig_hist, config={'displayModeBar': False})], style={'flex': '1.5', 'minWidth': '300px'}),
-                html.Div([dcc.Graph(figure=fig_pie, config={'displayModeBar': False})], style={'flex': '1', 'minWidth': '250px'})
-            ], style={'display': 'flex', 'gap': '16px', 'flexWrap': 'wrap', 'marginBottom': '16px'}),
-            html.Div([
-                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.1rem'}),
+                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.05rem'}),
                 html.Div(top5_cards)
-            ])
-        ])
+            ], style={'marginTop': '6px'})
+        ], style={
+            'backgroundColor': '#1E2631',
+            'padding': '20px',
+            'borderRadius': '12px',
+            'boxShadow': '0 6px 18px rgba(0,0,0,0.35)'
+        })
 
     elif tab == 'tab-table':
         # Prepare DataFrame for Table
