@@ -1,0 +1,145 @@
+{
+  "timestamp": "2025-11-26T21:57:52.716490",
+  "geographic_distribution": {
+    "Kabupaten Rembang Leteh": 1,
+    "Kabupaten Lampung Selatan Way Urang": 1,
+    "Mamuju Ahmad Kirang": 1,
+    "Kabupaten Kubu Raya Kapuas": 1,
+    "Jakarta Timur Kebon Nanas": 1,
+    "Padang Padang Pasir": 1,
+    "Kota Tomohon": 1,
+    "Seaside Residences": 1,
+    "Kabupaten Musi Rawas": 1,
+    "Solo Manahan": 1,
+    "Jambi": 1,
+    "Ternate Marikurubu": 1,
+    "Kabupaten Bandung Barat Saguling": 1,
+    "Kabupaten Sintang Baning Kota": 1,
+    "Kabupaten Sambas Dalam Kaum": 1
+  },
+  "aqi_distribution": {
+    "total_stations": 120,
+    "mean": 48.2,
+    "median": 47.0,
+    "min": 2.0,
+    "max": 150.0,
+    "category_breakdown": {
+      "Good": 67,
+      "Moderate": 45,
+      "Unhealthy for Sensitive Groups": 8
+    },
+    "good_count": 67,
+    "moderate_count": 45,
+    "unhealthy_count": 0,
+    "hazardous_count": 0
+  },
+  "top_worst_stations": [
+    {
+      "name": "Jambi, Indonesia",
+      "city": "Jambi",
+      "aqi": 150.0,
+      "pm25": 150.0,
+      "category": "Unhealthy for Sensitive Groups"
+    },
+    {
+      "name": "Kabupaten Kampar Bangkinang",
+      "city": "Kabupaten Kampar Bangkinang",
+      "aqi": 130.0,
+      "pm25": 130.0,
+      "category": "Unhealthy for Sensitive Groups"
+    },
+    {
+      "name": "Kabupaten Muaro Jambi",
+      "city": "Kabupaten Muaro Jambi",
+      "aqi": 126.0,
+      "pm25": 126.0,
+      "category": "Unhealthy for Sensitive Groups"
+    },
+    {
+      "name": "Kabupaten Aceh Besar",
+      "city": "Kabupaten Aceh Besar",
+      "aqi": 119.0,
+      "pm25": 126.0,
+      "category": "Unhealthy for Sensitive Groups"
+    },
+    {
+      "name": "Kabupaten Siak Bunga Raya",
+      "city": "Kabupaten Siak Bunga Raya",
+      "aqi": 119.0,
+      "pm25": 119.0,
+      "category": "Unhealthy for Sensitive Groups"
+    }
+  ],
+  "pm25_statistics": {
+    "average": 47.7,
+    "min": 0,
+    "max": 151.0,
+    "median": 46.0,
+    "hourly_pattern": {
+      "0": 47.4,
+      "1": 47.3,
+      "2": 48.5,
+      "3": 47.9,
+      "4": 47.6,
+      "5": 47.7,
+      "6": 48.0,
+      "7": 48.0,
+      "8": 46.5,
+      "9": 46.6,
+      "10": 45.7,
+      "11": 47.3,
+      "12": 46.8,
+      "13": 50.2,
+      "14": 48.8,
+      "15": 47.6,
+      "16": 47.6,
+      "17": 48.5,
+      "18": 48.8,
+      "19": 49.1,
+      "20": 45.8,
+      "21": 49.4,
+      "22": 47.0,
+      "23": 48.1
+    },
+    "peak_hours": 13
+  },
+  "parameter_statistics": {
+    "pm25": {
+      "count": 3373,
+      "average": 47.71,
+      "max": 151.0
+    },
+    "pm10": {
+      "count": 3370,
+      "average": 17.99,
+      "max": 65.0
+    },
+    "no2": {
+      "count": 3107,
+      "average": 15.81,
+      "max": 81.0
+    },
+    "so2": {
+      "count": 3132,
+      "average": 12.56,
+      "max": 62.0
+    },
+    "o3": {
+      "count": 3132,
+      "average": 17.71,
+      "max": 91.0
+    },
+    "co": {
+      "count": 3132,
+      "average": 0,
+      "max": 0
+    }
+  },
+  "data_completeness": {
+    "active_stations": 121,
+    "total_readings": 26409,
+    "avg_readings_per_station": 218,
+    "expected_per_station": 168,
+    "completeness_percentage": 129.8
+  }
+}

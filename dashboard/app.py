@@ -29,11 +29,19 @@ DEFAULT_ZOOM = 4
 
 # Updated Color Palette - Design System
 COLORS = {
-    "Good": "#44CC77",                         # teal
-    "Moderate": "#FFBB02",                     # orange
-    "Unhealthy": "#E2334B",                    
-    "Hazardous": "#9C54E9",                  
+    "Good": "#76F0A9",                         # teal
+    "Moderate": "#F59964",                     # orange
+    "Unhealthy": "#F87064",                    
+    "Hazardous": "#7E9FF0",                  
 }
+
+def simplify_category(cat):
+    """Map backend categories to the 4-color design system"""
+    if cat in ["Unhealthy for Sensitive Groups", "Unhealthy"]:
+        return "Unhealthy"
+    elif cat in ["Very Unhealthy", "Hazardous"]:
+        return "Hazardous"
+    return cat
 
 # WHO Thresholds (24h mean guidelines approx)
 THRESHOLDS = {
@@ -346,7 +354,10 @@ def update_dashboard_data(n):
         city = p.get("city", "Unknown")
         aqi = p.get("aqi", 0)
         pm25 = p.get("pm25", 0)
-        cat = p.get("category", "Unknown")
+        cat = simplify_category(p.get("category", "Unknown"))
+        # Update property so downstream (customdata, sidepanel) sees simplified category
+        p["category"] = cat
+        
         color = COLORS.get(cat, COLORS["Moderate"])
         
         texts.append(f"{name}<br>City: {city}<br>AQI: {aqi}<br>PM2.5: {pm25} µg/m³")
@@ -598,7 +609,7 @@ def update_tabs(tab):
     if tab == 'tab-overview':
         # Precompute
         aqi_vals = [f["properties"].get("aqi", 0) for f in features]
-        categories = [f["properties"].get("category", "Unknown") for f in features]
+        categories = [simplify_category(f["properties"].get("category", "Unknown")) for f in features]
 
         cat_counts = Counter(categories)
 
@@ -713,7 +724,7 @@ def update_tabs(tab):
         top5_cards = []
         for i, f in enumerate(sorted_aqi):
             p = f["properties"]
-            cat = p.get("category", "Unknown")
+            cat = simplify_category(p.get("category", "Unknown"))
             badge_color = COLORS.get(cat, COLORS["Moderate"])
             top5_cards.append(html.Div([
                 html.Div([
@@ -771,7 +782,7 @@ def update_tabs(tab):
                 "City": p.get("city", "Unknown"),
                 "AQI": p.get("aqi", 0),
                 "PM2.5": p.get("pm25", 0),
-                "Category": p.get("category", "Unknown"),
+                "Category": simplify_category(p.get("category", "Unknown")),
                 "Status": "🟢 Online"
             })
         df = pd.DataFrame(data)

@@ -1,0 +1,114 @@
+{
+  "timestamp": "2025-11-26T21:54:40.870057",
+  "api_response_time": {
+    "/stations.geojson": {
+      "endpoint": "/stations.geojson",
+      "requests": 100,
+      "mean_ms": 18.12,
+      "median_ms": 12.14,
+      "min_ms": 9.64,
+      "max_ms": 54.19,
+      "p95_ms": 34.73,
+      "failures": 0,
+      "success_rate": 100.0
+    },
+    "/summary": {
+      "endpoint": "/summary",
+      "requests": 100,
+      "mean_ms": 17.94,
+      "median_ms": 15.09,
+      "min_ms": 13.18,
+      "max_ms": 37.77,
+      "p95_ms": 32.74,
+      "failures": 0,
+      "success_rate": 100.0
+    }
+  },
+  "concurrent_load": {
+    "concurrency_10": {
+      "concurrency": 10,
+      "total_requests": 100,
+      "successful": 100,
+      "failed": 0,
+      "mean_ms": 83.48,
+      "p95_ms": 122.94,
+      "failure_rate": 0.0
+    },
+    "concurrency_25": {
+      "concurrency": 25,
+      "total_requests": 100,
+      "successful": 100,
+      "failed": 0,
+      "mean_ms": 191.92,
+      "p95_ms": 229.85,
+      "failure_rate": 0.0
+    },
+    "concurrency_50": {
+      "concurrency": 50,
+      "total_requests": 100,
+      "successful": 100,
+      "failed": 0,
+      "mean_ms": 350.51,
+      "p95_ms": 499.76,
+      "failure_rate": 0.0
+    }
+  },
+  "database_queries": {
+    "count_stations": {
+      "query": "SELECT COUNT(*) FROM stations",
+      "execution_time_ms": 7.48,
+      "rows_returned": 1
+    },
+    "count_observations": {
+      "query": "SELECT COUNT(*) FROM observations",
+      "execution_time_ms": 5.09,
+      "rows_returned": 1
+    },
+    "latest_observations": {
+      "query": "SELECT DISTINCT ON (station_id, param) station_id, param, value, ts FROM observa...",
+      "execution_time_ms": 12.94,
+      "rows_returned": 100
+    },
+    "stations_with_geom": {
+      "query": "SELECT station_id, name, city, ST_AsGeoJSON(geom) FROM stations WHERE geom IS NO...",
+      "execution_time_ms": 0.74,
+      "rows_returned": 121
+    },
+    "timeseries_query": {
+      "query": "SELECT ts, value FROM observations WHERE station_id = (SELECT station_id FROM st...",
+      "execution_time_ms": 1.98,
+      "rows_returned": 106
+    }
+  },
+  "data_statistics": {
+    "total_stations": 121,
+    "total_observations": 26429,
+    "date_range": {
+      "earliest": "2025-11-19 01:00:00",
+      "latest": "2025-11-26 22:00:00"
+    },
+    "parameters": [
+      "pm10",
+      "pm1",
+      "aqi",
+      "pm25",
+      "uvi",
+      "r",
+      "wg",
+      "p",
+      "t",
+      "h",
+      "so2",
+      "no2",
+      "dew",
+      "co",
+      "o3",
+      "w",
+      "dominentpol"
+    ],
+    "last_24h": {
+      "stations_reporting": 116,
+      "total_readings": 4535
+    }
+  }
+}
