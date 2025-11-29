@@ -681,30 +681,46 @@ def update_tabs(tab):
             ], style={'background': 'rgba(240,107,107,0.04)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(240,107,107,0.10)'})
         ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '18px'})
 
-        # Histogram (left)
-        fig_hist = go.Figure()
-        fig_hist.add_trace(go.Histogram(
+        # Scatter Plot (left) - AQI vs PM2.5
+        pm25_vals = [f["properties"].get("pm25", 0) for f in features]
+        station_names = [f["properties"].get("name", "Unknown") for f in features]
+
+        fig_scatter = go.Figure()
+
+        fig_scatter.add_trace(go.Scatter(
             x=aqi_vals,
-            nbinsx=25,
+            y=pm25_vals,
+            mode='markers',
+            text=station_names,
             marker=dict(
-                line=dict(color='rgba(255,255,255,0.03)', width=1)
+                size=10,
+                color='rgba(70, 120, 180, 0.55)',    # soft blue transparent
+                line=dict(width=1, color='rgba(70,120,180,0.9)'),
             ),
-            showlegend=False
+            hovertemplate="<b>%{text}</b><br>AQI: %{x}<br>PM2.5: %{y} µg/m³<extra></extra>"
         ))
-        fig_hist.update_traces(marker=dict(
-            color=aqi_vals,
-            colorscale=[[0, '#F87064'], [0.33, '#F59964'], [0.66, '#76F0A9'], [1, '#7E9FF0']],
-            showscale=False
-        ))
-        fig_hist.update_layout(
+
+        fig_scatter.update_layout(
             template="plotly_dark",
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            height=360,
-            title=dict(text="Nationwide AQI Distribution", font=dict(size=18, color='#ECF0F1'), x=0),
-            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.04)'),
-            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.04)'),
-            margin=dict(l=12, r=12, t=40, b=40)
+            height=330,
+            margin=dict(l=10, r=10, t=40, b=10),
+            title=dict(
+                text="AQI vs PM2.5 Correlation",
+                font=dict(size=18, color='#ECF0F1'),
+                x=0
+            ),
+            xaxis=dict(
+                title="AQI",
+                gridcolor='rgba(255,255,255,0.05)',
+                zeroline=False
+            ),
+            yaxis=dict(
+                title="PM2.5 (µg/m³)",
+                gridcolor='rgba(255,255,255,0.05)',
+                zeroline=False
+            )
         )
 
         # Donut pie (right)
@@ -758,17 +774,47 @@ def update_tabs(tab):
         # Compose left + right sections
         left_section = html.Div([
             # Title is already inside fig_hist, but add spacing & alignment
-            html.Div(dcc.Graph(figure=fig_hist, config={'displayModeBar': False}), style={'width': '100%'})
+            html.Div(dcc.Graph(figure=fig_scatter, config={'displayModeBar': False}), style={'width': '100%'})
         ], style={'flex': '2', 'minWidth': '560px'})
 
+        # Container horizontal untuk pie + legend
+        pie_and_legend = html.Div([
+            html.Div(
+                dcc.Graph(figure=fig_pie, config={'displayModeBar': False}),
+                style={'width': '55%', 'minWidth': '200px'}
+            ),
+            html.Div(
+                legend_column,
+                style={'width': '45%', 'paddingLeft': '14px'}
+            )
+        ], style={
+            'display': 'flex',
+            'flexDirection': 'row',
+            'alignItems': 'center',   # sejajarkan tengah vertikal
+            'justifyContent': 'flex-start',
+            'width': '100%'
+        })
+
         right_section = html.Div([
-            html.Div("Category Breakdown", style={'color': '#ECF0F1', 'fontSize': '1.5rem', 'fontWeight': '800', 'marginBottom': '12px'}),
-            html.Div(dcc.Graph(figure=fig_pie, config={'displayModeBar': False}), style={'maxWidth': '360px'}),
-            html.Div(legend_column, style={'marginTop': '8px'})
-        ], style={'flex': '1', 'minWidth': '260px', 'display': 'flex', 'flexDirection': 'column', 'alignItems': 'flex-start'})
+            html.Div("Category Breakdown", style={
+                'color': '#ECF0F1',
+                'fontSize': '1.5rem',
+                'fontWeight': '800',
+                'marginBottom': '12px'
+            }),
+            
+            pie_and_legend  # gunakan layout horizontal
+        ], style={
+            'flex': '1',
+            'minWidth': '300px',
+            'display': 'flex',
+            'flexDirection': 'column',
+            'alignItems': 'flex-start'
+        })
+
 
         middle_row = html.Div([left_section, right_section], style={'display': 'flex', 'gap': '24px', 'alignItems': 'flex-start', 'marginBottom': '18px'})
-
+    
         # Top 5 with cards
         sorted_aqi = sorted(features, key=lambda x: x["properties"].get("aqi", 0), reverse=True)[:5]
         top5_cards = []
