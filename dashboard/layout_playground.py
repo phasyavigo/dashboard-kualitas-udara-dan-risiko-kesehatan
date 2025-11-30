@@ -49,12 +49,8 @@ def get_aqi_category(aqi_value):
         return "Good"
     elif aqi_value <= 100:
         return "Moderate"
-    elif aqi_value <= 150:
-        return "Unhealthy" # Simplified for 4 colors
     elif aqi_value <= 200:
         return "Unhealthy"
-    elif aqi_value <= 300:
-        return "Hazardous" # Simplified
     else:
         return "Hazardous"
 
@@ -149,8 +145,16 @@ def build_kpi_card(title, value, subtext=None, id_val=None, accent="#ECF0F1"):
 def build_map():
     return dcc.Graph(
         id="map",
-        style={'height': '600px', 'width': '100%', 'borderRadius': '8px', 'overflow': 'hidden'},
-        config={'displayModeBar': False}
+        style={
+            'height': '600px',
+            'width': '100%',
+            'borderRadius': '8px',
+            'overflow': 'hidden'
+        },
+        config={
+            'displayModeBar': False,
+            'scrollZoom': True
+        }
     )
 
 def build_side_panel():
@@ -458,19 +462,33 @@ def update_side_panel(data, n):
 
     # --- Trend Chart ---
     # ubah judul menjadi "PM 2.5 ..." dan buat tebal melalui font
-    fig_trend = px.area(df_trend, x="ts", y="value", title="PM 2.5 Trend (Last 7 Days)")
+    fig_trend = px.area(df_trend, x="ts", y="value", title="<span style='font-size: 1.2rem; color: #FFFFFF; font-weight: bold'>PM 2.5 Trend (Last 7 Days)</span>")
+    fig_trend.update_traces(
+        line_shape='spline',
+        line_width=3,
+        line_color='#FFC107',
+        fillcolor='rgba(255, 193, 7, 0.1)'
+    )
     fig_trend.update_layout(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=24, r=20, t=40, b=40),  # l=24 agar sejajar dengan nama stasiun (sesuaikan jika perlu)
+        margin=dict(l=24, r=20, t=40, b=40),
         height=250,
-        title=dict(font=dict(size=14, color='#ECF0F1', family="'Helvetica Neue', Helvetica, Arial, sans-serif"), x=0),  # x=0 to left align
-        xaxis_title=None,
-        yaxis_title="µg/m³"
+        title=dict(font=dict(size=14, color='#ECF0F1', family="'Helvetica Neue', Helvetica, Arial, sans-serif"), x=0),
+        xaxis_title=f"--- WHO Limit ({THRESHOLDS['pm25']} µg/m³)",
+        yaxis_title="µg/m³",
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='rgba(255,255,255,0.1)',
+            zeroline=False
+        ),
+        xaxis=dict(
+            showgrid=False
+        )
     )
     # garis threshold WHO
-    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="dash", line_color="#FFEB3B",
+    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="5px,3px", line_color="#FFEB3B",
                         annotation_text="WHO Limit", annotation_position="top left")
 
     # --- Forecast cards (sama seperti sebelumnya) ---
@@ -533,6 +551,24 @@ def update_side_panel(data, n):
                     'fontSize': '0.95rem',
                     'paddingTop': '2px'
                 }
+            ),
+            html.Div(
+                datetime.now().strftime("%A, %d %B %Y"),
+                style={
+                    'margin': '8px 0 0 0',
+                    'color': '#FFFFFF',
+                    'fontSize': '1.2rem',
+                    'fontWeight': 'bold'
+                }
+            ),
+            html.Div(
+                f"Last updated : {datetime.now().strftime('%H:%M')} WIB",
+                style={
+                    'margin': '2px 0 0 0',
+                    'color': '#BDC3C7',
+                    'fontSize': '0.9rem',
+                    'fontWeight': '500'
+                }
             )
         ], style={'flex': '1', 'paddingLeft': '8px'}),
 
@@ -583,7 +619,7 @@ def update_side_panel(data, n):
         # Trend graph (left-aligned because fig margin l matches header paddingLeft)
         dcc.Graph(figure=fig_trend, config={'displayModeBar': False}),
         # Forecast
-        html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'color': '#BDC3C7'}),
+        html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'fontSize': '1.2rem', 'color': '#FFFFFF', 'fontWeight': 'bold'}),
         html.Div(forecast_html, style={'display': 'flex', 'gap': '8px'}),
         html.Div([
             html.P("Source: Static Mock Data", style={'fontSize': '0.8rem', 'color': '#7F8C8D', 'marginTop': '16px'})
@@ -598,17 +634,31 @@ def update_side_panel(data, n):
     df_trend = generate_mock_timeseries()
     forecast = generate_mock_forecast()
 
-    fig_trend = px.area(df_trend, x="ts", y="value", title="PM2.5 Trend (Last 7 Days)")
+    fig_trend = px.area(df_trend, x="ts", y="value", title="<b>PM 2.5</b> Trend <span style='font-size: 0.85em; color: #95A5A6; font-weight: normal'>(Last 7 Days)</span>")
+    fig_trend.update_traces(
+        line_shape='spline',
+        line_width=3,
+        line_color='#FFC107',
+        fillcolor='rgba(255, 193, 7, 0.1)'
+    )
     fig_trend.update_layout(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=40, r=20, t=40, b=40),
         height=250,
-        xaxis_title=None,
-        yaxis_title="µg/m³"
+        xaxis_title=f"--- WHO Limit ({THRESHOLDS['pm25']} µg/m³)",
+        yaxis_title="µg/m³",
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='rgba(255,255,255,0.1)',
+            zeroline=False
+        ),
+        xaxis=dict(
+            showgrid=False
+        )
     )
-    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="dash", line_color="#FFEB3B", annotation_text="WHO Limit", annotation_position="top left")
+    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="5px,3px", line_color="#FFEB3B", annotation_text="WHO Limit", annotation_position="top left")
 
     forecast_html = []
     for day in forecast:
@@ -705,12 +755,7 @@ def update_tabs(tab):
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             height=330,
-            margin=dict(l=10, r=10, t=40, b=10),
-            title=dict(
-                text="AQI vs PM2.5 Correlation",
-                font=dict(size=18, color='#ECF0F1'),
-                x=0
-            ),
+            margin=dict(l=10, r=10, t=10, b=10), # Reduced top margin since title is moved out
             xaxis=dict(
                 title="AQI",
                 gridcolor='rgba(255,255,255,0.05)',
@@ -773,7 +818,12 @@ def update_tabs(tab):
 
         # Compose left + right sections
         left_section = html.Div([
-            # Title is already inside fig_hist, but add spacing & alignment
+            html.Div("AQI vs PM2.5 Correlation", style={
+                'color': '#ECF0F1',
+                'fontSize': '1.5rem',
+                'fontWeight': '800',
+                'marginBottom': '12px'
+            }),
             html.Div(dcc.Graph(figure=fig_scatter, config={'displayModeBar': False}), style={'width': '100%'})
         ], style={'flex': '2', 'minWidth': '560px'})
 
@@ -825,25 +875,26 @@ def update_tabs(tab):
             top5_cards.append(html.Div([
                 html.Div([
                     html.Div(f"#{i+1}", style={
-                        'width': '32px',
-                        'height': '32px',
+                        'width': '42px',
+                        'height': '42px',
                         'borderRadius': '50%',
                         'background': badge_color,
                         'display': 'flex',
                         'alignItems': 'center',
                         'justifyContent': 'center',
                         'fontWeight': '800',
-                        'fontSize': '0.9rem',
-                        'color': '#fff'
+                        'fontSize': '1.1rem',
+                        'color': '#fff',
+                        'flex': '0 0 auto'
                     }),
                     html.Div([
-                        html.Div(p.get("name", "Unknown"), style={'fontWeight': '700', 'fontSize': '0.95rem', 'color': '#ECF0F1'}),
-                        html.Div(p.get("city", "Unknown"), style={'fontSize': '0.75rem', 'color': '#95A5A6'})
+                        html.Div(p.get("name", "Unknown"), style={'fontWeight': '700', 'fontSize': '1.1rem', 'color': '#ECF0F1'}),
+                        html.Div(p.get("city", "Unknown"), style={'fontSize': '0.9rem', 'color': '#95A5A6', 'marginTop': '2px'})
                     ], style={'flex': '1', 'marginLeft': '12px'})
                 ], style={'display': 'flex', 'alignItems': 'center', 'marginBottom': '8px'}),
                 html.Div([
                     html.Span(f"AQI: {p.get('aqi', 0)}", style={'fontWeight': '800', 'fontSize': '1.1rem', 'color': badge_color}),
-                    html.Span(f" • PM2.5: {p.get('pm25', 0)} µg/m³", style={'fontSize': '0.85rem', 'color': '#BDC3C7', 'marginLeft': '8px'})
+                    html.Span(f" • PM2.5: {p.get('pm25', 0)} µg/m³", style={'fontSize': '0.95rem', 'color': '#ECF0F1', 'marginLeft': '8px', 'fontWeight': '500'})
                 ])
             ], style={
                 'background': 'linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
@@ -859,7 +910,11 @@ def update_tabs(tab):
             stats_cards,
             middle_row,
             html.Div([
-                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.05rem'}),
+                html.Div("Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1',
+                'fontSize': '1.5rem',
+                'fontWeight': '800',
+                'marginBottom': '12px'
+                }),
                 html.Div(top5_cards)
             ], style={'marginTop': '6px'})
         ], style={
@@ -873,141 +928,195 @@ def update_tabs(tab):
 
     elif tab == 'tab-table':
         data = []
-        for f in features:
+        now = datetime.now()
+        for i, f in enumerate(features):
             p = f["properties"]
+            # Generate mock timestamp
+            ts = (now - timedelta(minutes=random.randint(0, 60))).strftime("%Y-%m-%d %H:%M:%S")
+            
+            # Badge HTML generation for Markdown
+            cat = p.get("category", "Unknown")
+            cat_color = COLORS.get(cat, COLORS["Moderate"])
+            cat_badge = f'<span style="background-color: {cat_color}22; color: {cat_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {cat_color}44;">{cat}</span>'
+            
+            aqi = p.get("aqi", 0)
+            aqi_color = COLORS["Good"]
+            if aqi > 200: aqi_color = COLORS["Hazardous"]
+            elif aqi > 100: aqi_color = COLORS["Unhealthy"]
+            elif aqi > 50: aqi_color = COLORS["Moderate"]
+            
+            aqi_badge = f'<span style="background-color: {aqi_color}22; color: {aqi_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {aqi_color}44;">{aqi}</span>'
+
             data.append({
-                "Station": p.get("name", "Unknown"),
-                "City": p.get("city", "Unknown"),
-                "AQI": p.get("aqi", 0),
-                "PM2.5": p.get("pm25", 0),
-                "Category": p.get("category", "Unknown"),
-                "Status": "🟢 Online"
+                "City": f"{p.get('city', 'Unknown')}, {p.get('name', 'Unknown')}",
+                "ts": ts,
+                "Category": cat_badge,
+                "AQI": aqi_badge,
+                "PM 2.5": f"{p.get('pm25', 0)}",
+                "raw_city": p.get('city', 'Unknown'), # Hidden for filtering
+                "raw_cat": cat # Hidden for filtering
             })
         df = pd.DataFrame(data)
 
         return html.Div([
+            # Header Row
             html.Div([
+                # Left: Title & Total
                 html.Div([
-                    html.H4(
-                        "All Monitoring Stations",
-                        style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '2.2rem'}
-                    ),
-                    html.P(
-                        f"Total: {len(df)} stations • Use filters to narrow down results",
-                        style={'color': '#95A5A6', 'fontSize': '1.5rem', 'marginBottom': '16px'}
-                    )
-                ]),
+                    html.H2("All Monitoring Stations", style={'color': '#ECF0F1', 'margin': '0 0 4px 0', 'fontSize': '1.5rem', 'fontWeight': '700'}),
+                    html.H3(f"Total: {len(df)} stations", style={'color': '#95A5A6', 'margin': '0', 'fontSize': '1rem', 'fontWeight': '400'})
+                ], style={'flex': '1'}),
 
-                dash_table.DataTable(
-                    data=df.to_dict('records'),
-                    columns=[{'name': i, 'id': i} for i in df.columns],
-                    sort_action="native",
-                    filter_action="native",
-                    page_size=15,
-
-                    style_header={
-                        'background': 'linear-gradient(90deg, #232B2D, #1A2224)',
-                        'fontWeight': '700',
-                        'color': '#ECF0F1',
-                        'textAlign': 'left',
-                        'padding': '12px',
-                        'borderBottom': '1px solid rgba(255,255,255,0.08)',
-                        'fontSize': '0.92rem'
-                    },
-
-                    style_cell={
-                        'backgroundColor': '#101617',
-                        'color': '#D0D6D8',
-                        'border': 'none',
-                        'textAlign': 'left',
-                        'padding': '10px',
-                        'fontSize': '0.9rem',
-                        'whiteSpace': 'nowrap',
-                        'overflow': 'hidden',
-                        'textOverflow': 'ellipsis'
-                    },
-
-                    style_data={
-                        'borderBottom': '1px solid rgba(255,255,255,0.03)'
-                    },
-
-                    style_data_conditional=[
-                        # zebra soft
-                        {
-                            'if': {'row_index': 'odd'},
-                            'backgroundColor': '#0D1415'
-                        },
-
-                        # row hover effect
-                        {
-                            'if': {'state': 'active'},
-                            'backgroundColor': '#162122',
-                            'transition': '0.2s'
-                        },
-
-                        # AQI colors
-                        {
-                            'if': {'filter_query': '{AQI} > 150', 'column_id': 'AQI'},
-                            'color': '#E53935',
-                            'fontWeight': 'bold'
-                        },
-                        {
-                            'if': {'filter_query': '{AQI} > 100 && {AQI} <= 150', 'column_id': 'AQI'},
-                            'color': '#FF8A65',
-                            'fontWeight': 'bold'
-                        },
-                        {
-                            'if': {'filter_query': '{AQI} > 50 && {AQI} <= 100', 'column_id': 'AQI'},
-                            'color': '#FFC107',
-                            'fontWeight': 'bold'
-                        },
-                        {
-                            'if': {'filter_query': '{AQI} <= 50', 'column_id': 'AQI'},
-                            'color': '#43A047',
-                            'fontWeight': 'bold'
-                        },
-
-                        # Category colors with soft background badge look
-                        {
-                            'if': {'filter_query': '{Category} = "Good"', 'column_id': 'Category'},
-                            'color': '#43A047',
-                            'backgroundColor': 'rgba(67,160,71,0.10)',
-                            'fontWeight': '600'
-                        },
-                        {
-                            'if': {'filter_query': '{Category} = "Moderate"', 'column_id': 'Category'},
-                            'color': '#FFC107',
-                            'backgroundColor': 'rgba(255,193,7,0.10)',
-                            'fontWeight': '600'
-                        },
-                        {
-                            'if': {'filter_query': '{Category} contains "Unhealthy"', 'column_id': 'Category'},
-                            'color': '#FF8A65',
-                            'backgroundColor': 'rgba(255,138,101,0.10)',
-                            'fontWeight': '600'
-                        },
-                        {
-                            'if': {'filter_query': '{Category} = "Very Unhealthy"', 'column_id': 'Category'},
-                            'color': '#8E24AA',
-                            'backgroundColor': 'rgba(142,36,170,0.10)',
-                            'fontWeight': '600'
-                        },
-                        {
-                            'if': {'filter_query': '{Category} = "Hazardous"', 'column_id': 'Category'},
-                            'color': '#E53935',
-                            'backgroundColor': 'rgba(229,57,53,0.10)',
-                            'fontWeight': '600'
+                # Right: Controls
+                html.Div([
+                    dcc.Input(
+                        id='search-city',
+                        type='text',
+                        placeholder='Search city...',
+                        style={
+                            'backgroundColor': '#121819',
+                            'border': '1px solid rgba(255,255,255,0.1)',
+                            'color': '#ECF0F1',
+                            'padding': '10px 16px',
+                            'borderRadius': '8px',
+                            'width': '240px',
+                            'fontSize': '0.9rem',
+                            'outline': 'none'
                         }
-                    ],
+                    ),
+                    dcc.Dropdown(
+                        id='filter-category',
+                        options=[{'label': k, 'value': k} for k in COLORS.keys()],
+                        placeholder="Filter Category",
+                        style={
+                            'width': '180px',
+                            'fontSize': '0.9rem',
+                            'backgroundColor': '#121819',
+                            'color': '#333' # Dropdown text color fix
+                        }
+                    )
+                ], style={'display': 'flex', 'gap': '12px', 'alignItems': 'center'})
+            ], style={
+                'display': 'flex', 
+                'alignItems': 'center', 
+                'justifyContent': 'space-between', 
+                'marginBottom': '24px',
+                'paddingBottom': '16px',
+                'borderBottom': '1px solid rgba(255,255,255,0.05)'
+            }),
 
-                    style_filter={
-                        'backgroundColor': '#1B2426',
-                        'color': '#ECF0F1',
-                        'border': '1px solid rgba(255,255,255,0.04)'
+            dash_table.DataTable(
+                id='station-table',
+                data=df.to_dict('records'),
+                columns=[
+                    {'name': 'City / Station', 'id': 'City'},
+                    {'name': 'Timestamp', 'id': 'ts'},
+                    {'name': 'Category', 'id': 'Category', 'presentation': 'markdown'},
+                    {'name': 'AQI', 'id': 'AQI', 'presentation': 'markdown'},
+                    {'name': 'PM 2.5', 'id': 'PM 2.5'}
+                ],
+                sort_action="native",
+                page_size=10,
+                markdown_options={"html": True},
+
+                style_header={
+                    'backgroundColor': '#1E2631',
+                    'fontWeight': '600',
+                    'color': '#95A5A6',
+                    'textAlign': 'left',
+                    'padding': '16px',
+                    'borderBottom': '1px solid rgba(255,255,255,0.05)',
+                    'fontSize': '0.85rem',
+                    'textTransform': 'uppercase',
+                    'letterSpacing': '0.5px'
+                },
+
+                style_cell={
+                    'backgroundColor': '#1E2631',
+                    'color': '#ECF0F1',
+                    'border': 'none',
+                    'borderBottom': '1px solid rgba(255,255,255,0.02)',
+                    'textAlign': 'left',
+                    'padding': '16px',
+                    'fontSize': '1rem', # Increased font size
+                    'fontFamily': '"Inter", "Segoe UI", sans-serif',
+                    'whiteSpace': 'normal',
+                    'height': 'auto'
+                },
+                
+                style_data_conditional=[
+                    {
+                        'if': {'state': 'active'},
+                        'backgroundColor': '#252e3a',
+                        'border': 'none'
+                    },
+                    {
+                        'if': {'state': 'selected'},
+                        'backgroundColor': '#252e3a',
+                        'border': 'none'
                     }
-                )
-            ])
+                ],
+
+                style_table={
+                    'borderRadius': '8px',
+                    'overflow': 'hidden'
+                }
+            )
         ])
+
+@app.callback(
+    Output("station-table", "data"),
+    [Input("search-city", "value"),
+     Input("filter-category", "value"),
+     Input("analysis-tabs", "value")] # Trigger refresh on tab switch
+)
+def update_table_data(search_term, filter_cat, tab):
+    if tab != 'tab-table':
+        return dash.no_update
+        
+    geojson = generate_mock_stations(60)
+    features = geojson["features"]
+    
+    data = []
+    now = datetime.now()
+    
+    for f in features:
+        p = f["properties"]
+        
+        # Filtering Logic
+        city_name = p.get('city', 'Unknown')
+        cat = p.get("category", "Unknown")
+        
+        if search_term and search_term.lower() not in city_name.lower():
+            continue
+            
+        if filter_cat and filter_cat != cat:
+            continue
+
+        # Generate mock timestamp
+        ts = (now - timedelta(minutes=random.randint(0, 60))).strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Badge HTML generation
+        cat_color = COLORS.get(cat, COLORS["Moderate"])
+        cat_badge = f'<span style="background-color: {cat_color}22; color: {cat_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {cat_color}44;">{cat}</span>'
+        
+        aqi = p.get("aqi", 0)
+        aqi_color = COLORS["Good"]
+        if aqi > 200: aqi_color = COLORS["Hazardous"]
+        elif aqi > 100: aqi_color = COLORS["Unhealthy"]
+        elif aqi > 50: aqi_color = COLORS["Moderate"]
+        
+        aqi_badge = f'<span style="background-color: {aqi_color}22; color: {aqi_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {aqi_color}44;">{aqi}</span>'
+
+        data.append({
+            "City": f"{city_name}, {p.get('name', 'Unknown')}",
+            "ts": ts,
+            "Category": cat_badge,
+            "AQI": aqi_badge,
+            "PM 2.5": f"{p.get('pm25', 0)}"
+        })
+    
+    return data
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8050)

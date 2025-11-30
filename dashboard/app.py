@@ -135,8 +135,16 @@ def build_kpi_card(title, value, subtext=None, id_val=None, accent="#ECF0F1"):
 def build_map():
     return dcc.Graph(
         id="map",
-        style={'height': '600px', 'width': '100%', 'borderRadius': '8px', 'overflow': 'hidden'},
-        config={'displayModeBar': False}
+        style={
+            'height': '600px',
+            'width': '100%',
+            'borderRadius': '8px',
+            'overflow': 'hidden'
+        },
+        config={
+            'displayModeBar': False,
+            'scrollZoom': True
+        }
     )
 
 def build_side_panel():
@@ -218,8 +226,6 @@ app.layout = html.Div([
     dcc.Tabs(
         id="analysis-tabs", 
         value='tab-overview', 
-        # PERBAIKAN 1: Background parent disamakan dengan container (#282F3C) atau transparent
-        # supaya kalau ada celah dikit tidak terlihat hitam.
         parent_style={'backgroundColor': 'transparent'}, 
         
         children=[
@@ -229,21 +235,21 @@ app.layout = html.Div([
                 style={
                     'color': '#888888', 
                     'backgroundColor': '#242a3b', 
-                    'border': 'none', # Hilangkan border default
+                    'border': 'none',
                     'fontWeight': 'bold',
-                    # PERBAIKAN 2: Radius hanya di KIRI ATAS
                     'borderRadius': '10px 0 0 0', 
                     'padding': '12px',
-                    'borderRight': '1px solid #1E2631' # Opsional: Pemisah tipis antar tab
+                    'borderRight': '1px solid #1E2631',
+                    'fontSize': '1.5rem'
                 },
                 selected_style={
                     'color': '#ECF0F1', 
                     'backgroundColor': '#21c7ef', 
                     'border': 'none',
                     'fontWeight': 'bold',
-                    # PERBAIKAN 2: Radius hanya di KIRI ATAS saat aktif
                     'borderRadius': '10px 0 0 0',
-                    'padding': '12px'
+                    'padding': '12px',
+                    'fontSize': '1.5rem',
                 }
             ),
             dcc.Tab(
@@ -254,30 +260,28 @@ app.layout = html.Div([
                     'backgroundColor': '#242a3b',
                     'border': 'none',
                     'fontWeight': 'bold',
-                    # PERBAIKAN 3: Radius hanya di KANAN ATAS
                     'borderRadius': '0 10px 0 0', 
                     'padding': '12px',
-                    # PERBAIKAN 4: Hapus marginLeft: '5px' agar nempel
+                    'fontSize': '1.5rem'
                 },
                 selected_style={
                     'color': '#ECF0F1', 
                     'backgroundColor': '#ff6969', 
                     'border': 'none',
                     'fontWeight': 'bold',
-                    # PERBAIKAN 3: Radius hanya di KANAN ATAS saat aktif
                     'borderRadius': '0 10px 0 0',
                     'padding': '12px',
+                    'fontSize': '1.5rem'
                 }
             ),
         ], 
-        # Style garis bawah container tab
         style={'marginBottom': '0px', 'borderBottom': '2px solid #242a3b'}
     ),
     
     html.Div(id="tabs-content", style={'padding': '16px'})
 
 ], style={
-    'background': '#282F3C', # Warna ini harus konsisten
+    'background': '#282F3C',
     'padding': '8px',
     'borderRadius': '10px',
     'boxShadow': '0 4px 8px rgba(0,0,0,0.3)'
@@ -495,28 +499,9 @@ def update_side_panel(data, n):
             html.Div("PM2.5 (avg)", style={'fontSize': '0.7rem', 'color': '#95A5A6'})
         ], style={'backgroundColor': '#122021', 'padding': '10px', 'borderRadius': '6px', 'textAlign': 'center', 'flex': '1'}))
 
-    # Pollutant small cards
-    pollutant_cards = html.Div([
-        html.Div([
-            html.Div("PM 2.5", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
-            html.Div(f"{pm25_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
-        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
-        html.Div([
-            html.Div("PM10", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
-            html.Div(f"{pm10_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
-        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
-        html.Div([
-            html.Div("O3", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
-            html.Div(f"{o3_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
-        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
-        html.Div([
-            html.Div("NO2", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
-            html.Div(f"{no2_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
-        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'})
-    ], style={'display': 'flex', 'gap': '8px', 'marginTop': '10px', 'marginBottom': '12px'})
-
-    # Header
+    # --- Header: name (left) and current AQI (right, aligned horizontally) ---
     header = html.Div([
+        # Left: station name + city (lebih besar)
         html.Div([
             html.Div(
                 data.get("name", "Unknown Station"),
@@ -537,9 +522,28 @@ def update_side_panel(data, n):
                     'fontSize': '0.95rem',
                     'paddingTop': '2px'
                 }
+            ),
+            html.Div(
+                datetime.now().strftime("%A, %d %B %Y"),
+                style={
+                    'margin': '8px 0 0 0',
+                    'color': '#FFFFFF',
+                    'fontSize': '1.2rem',
+                    'fontWeight': 'bold'
+                }
+            ),
+            html.Div(
+                f"Last updated : {datetime.now().strftime('%H:%M')} WIB",
+                style={
+                    'margin': '2px 0 0 0',
+                    'color': '#BDC3C7',
+                    'fontSize': '0.9rem',
+                    'fontWeight': '500'
+                }
             )
         ], style={'flex': '1', 'paddingLeft': '8px'}),
 
+        # Right: AQI card with label inside, centered
         html.Div([
             html.Div([
                 html.Div("AQI", style={
@@ -578,11 +582,81 @@ def update_side_panel(data, n):
         'paddingBottom': '12px'
     })
 
+    # Pollutant small cards (arranged horizontally)
+    pollutant_cards = html.Div([
+        # PM 2.5
+        html.Div([
+            html.Div("PM 2.5", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm25_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # PM10
+        html.Div([
+            html.Div("PM10", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{pm10_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # O3
+        html.Div([
+            html.Div("O3", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{o3_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'}),
+
+        # NO2
+        html.Div([
+            html.Div("NO2", style={'fontSize': '0.75rem', 'color': '#95A5A6'}),
+            html.Div(f"{no2_val}", style={'fontSize': '1.3rem', 'fontWeight': '800', 'color': '#ECF0F1'})
+        ], style={'backgroundColor': '#122021', 'padding': '12px', 'borderRadius': '8px', 'textAlign': 'center', 'flex': '1', 'border': '1px solid rgba(255,255,255,0.03)'})
+    ], style={'display': 'flex', 'gap': '8px', 'marginTop': '10px', 'marginBottom': '12px'})
+
+    # Trend Chart
+    fig_trend = px.area(df_trend, x="ts", y="value", title="<span style='font-size: 1.2rem; color: #FFFFFF; font-weight: bold'>PM 2.5 Trend (Last 7 Days)</span>")
+    fig_trend.update_traces(
+        line_shape='spline',
+        line_width=3,
+        line_color='#FFC107',
+        fillcolor='rgba(255, 193, 7, 0.1)'
+    )
+    fig_trend.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=24, r=20, t=40, b=40),
+        height=250,
+        title=dict(font=dict(size=14, color='#ECF0F1', family='"Montserrat", sans-serif'), x=0),
+        xaxis_title=f"--- WHO Limit ({THRESHOLDS['pm25']} µg/m³)",
+        yaxis_title="µg/m³",
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='rgba(255,255,255,0.1)',
+            zeroline=False
+        ),
+        xaxis=dict(
+            showgrid=False
+        )
+    )
+    fig_trend.add_hline(y=THRESHOLDS["pm25"], line_dash="5px,3px", line_color="#FFEB3B", annotation_text="WHO Limit", annotation_position="top left")
+
+    # Forecast Cards
+    forecast_html = []
+    if forecast:
+        for day in forecast:
+            forecast_html.append(html.Div([
+                html.Div(day.get("day", ""), style={'fontWeight': '700', 'marginBottom': '6px', 'color': '#ECF0F1'}),
+                html.Div(f"{day.get('avg', '-')}", style={'fontSize': '1.1rem', 'fontWeight': '800', 'color': '#FFD54F'}),
+                html.Div("PM2.5 (avg)", style={'fontSize': '0.7rem', 'color': '#95A5A6'})
+            ], style={'backgroundColor': '#122021', 'padding': '10px', 'borderRadius': '6px', 'textAlign': 'center', 'flex': '1'}))
+    else:
+        forecast_html.append(html.Div("No forecast data available", style={'color': '#95A5A6', 'textAlign': 'center', 'width': '100%'}))
+
     return html.Div([
         header,
+        # pollutant cards under header
         pollutant_cards,
+        # Trend graph (left-aligned because fig margin l matches header paddingLeft)
         dcc.Graph(figure=fig_trend, config={'displayModeBar': False}),
-        html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'color': '#BDC3C7'}),
+        # Forecast
+        html.H4("5-Day Forecast", style={'marginTop': '12px', 'marginBottom': '8px', 'fontSize': '1.2rem', 'color': '#FFFFFF', 'fontWeight': 'bold'}),
         html.Div(forecast_html, style={'display': 'flex', 'gap': '8px'}),
         html.Div([
             html.P("Source: Real-time API", style={'fontSize': '0.8rem', 'color': '#7F8C8D', 'marginTop': '16px'})
@@ -633,30 +707,41 @@ def update_tabs(tab):
             ], style={'background': 'rgba(240,107,107,0.04)', 'padding': '12px', 'borderRadius': '8px', 'flex': '1', 'border': '1px solid rgba(240,107,107,0.10)'})
         ], style={'display': 'flex', 'gap': '12px', 'marginBottom': '18px'})
 
-        # Histogram (left)
-        fig_hist = go.Figure()
-        fig_hist.add_trace(go.Histogram(
+        # Scatter Plot (left) - AQI vs PM2.5
+        pm25_vals = [f["properties"].get("pm25", 0) for f in features]
+        station_names = [f["properties"].get("name", "Unknown") for f in features]
+
+        fig_scatter = go.Figure()
+
+        fig_scatter.add_trace(go.Scatter(
             x=aqi_vals,
-            nbinsx=25,
+            y=pm25_vals,
+            mode='markers',
+            text=station_names,
             marker=dict(
-                line=dict(color='rgba(255,255,255,0.03)', width=1)
+                size=10,
+                color='rgba(70, 120, 180, 0.55)',    # soft blue transparent
+                line=dict(width=1, color='rgba(70,120,180,0.9)'),
             ),
-            showlegend=False
+            hovertemplate="<b>%{text}</b><br>AQI: %{x}<br>PM2.5: %{y} µg/m³<extra></extra>"
         ))
-        fig_hist.update_traces(marker=dict(
-            color=aqi_vals,
-            colorscale=[[0, '#F87064'], [0.33, '#F59964'], [0.66, '#76F0A9'], [1, '#7E9FF0']],
-            showscale=False
-        ))
-        fig_hist.update_layout(
+
+        fig_scatter.update_layout(
             template="plotly_dark",
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            height=360,
-            title=dict(text="Nationwide AQI Distribution", font=dict(size=18, color='#ECF0F1'), x=0),
-            xaxis=dict(title="AQI", gridcolor='rgba(255,255,255,0.04)'),
-            yaxis=dict(title="Station Count", gridcolor='rgba(255,255,255,0.04)'),
-            margin=dict(l=12, r=12, t=40, b=40)
+            height=330,
+            margin=dict(l=10, r=10, t=10, b=10), # Reduced top margin since title is moved out
+            xaxis=dict(
+                title="AQI",
+                gridcolor='rgba(255,255,255,0.05)',
+                zeroline=False
+            ),
+            yaxis=dict(
+                title="PM2.5 (µg/m³)",
+                gridcolor='rgba(255,255,255,0.05)',
+                zeroline=False
+            )
         )
 
         # Donut pie (right)
@@ -708,14 +793,45 @@ def update_tabs(tab):
 
         # Compose left + right sections
         left_section = html.Div([
-            html.Div(dcc.Graph(figure=fig_hist, config={'displayModeBar': False}), style={'width': '100%'})
+            html.Div("AQI vs PM2.5 Correlation", style={
+                'color': '#ECF0F1',
+                'fontSize': '1.5rem',
+                'fontWeight': '800',
+                'marginBottom': '12px'
+            }),
+            html.Div(dcc.Graph(figure=fig_scatter, config={'displayModeBar': False}), style={'width': '100%'})
         ], style={'flex': '2', 'minWidth': '560px'})
 
         right_section = html.Div([
-            html.Div("Category Breakdown", style={'color': '#ECF0F1', 'fontSize': '1.5rem', 'fontWeight': '800', 'marginBottom': '12px'}),
-            html.Div(dcc.Graph(figure=fig_pie, config={'displayModeBar': False}), style={'maxWidth': '360px'}),
-            html.Div(legend_column, style={'marginTop': '8px'})
-        ], style={'flex': '1', 'minWidth': '260px', 'display': 'flex', 'flexDirection': 'column', 'alignItems': 'flex-start'})
+            html.Div("Category Breakdown", style={
+                'color': '#ECF0F1',
+                'fontSize': '1.5rem',
+                'fontWeight': '800',
+                'marginBottom': '12px'
+            }),
+            html.Div([
+                html.Div(
+                    dcc.Graph(figure=fig_pie, config={'displayModeBar': False}),
+                    style={'width': '55%', 'minWidth': '200px'}
+                ),
+                html.Div(
+                    legend_column,
+                    style={'width': '45%', 'paddingLeft': '14px'}
+                )
+            ], style={
+                'display': 'flex',
+                'flexDirection': 'row',
+                'alignItems': 'center',
+                'justifyContent': 'flex-start',
+                'width': '100%'
+            })
+        ], style={
+            'flex': '1',
+            'minWidth': '300px',
+            'display': 'flex',
+            'flexDirection': 'column',
+            'alignItems': 'flex-start'
+        })
 
         middle_row = html.Div([left_section, right_section], style={'display': 'flex', 'gap': '24px', 'alignItems': 'flex-start', 'marginBottom': '18px'})
 
@@ -729,25 +845,26 @@ def update_tabs(tab):
             top5_cards.append(html.Div([
                 html.Div([
                     html.Div(f"#{i+1}", style={
-                        'width': '32px',
-                        'height': '32px',
+                        'width': '42px',
+                        'height': '42px',
                         'borderRadius': '50%',
                         'background': badge_color,
                         'display': 'flex',
                         'alignItems': 'center',
                         'justifyContent': 'center',
                         'fontWeight': '800',
-                        'fontSize': '0.9rem',
-                        'color': '#fff'
+                        'fontSize': '1.1rem',
+                        'color': '#fff',
+                        'flex': '0 0 auto'
                     }),
                     html.Div([
-                        html.Div(p.get("name", "Unknown"), style={'fontWeight': '700', 'fontSize': '0.95rem', 'color': '#ECF0F1'}),
-                        html.Div(p.get("city", "Unknown"), style={'fontSize': '0.75rem', 'color': '#95A5A6'})
+                        html.Div(p.get("name", "Unknown"), style={'fontWeight': '700', 'fontSize': '1.1rem', 'color': '#ECF0F1'}),
+                        html.Div(p.get("city", "Unknown"), style={'fontSize': '0.9rem', 'color': '#95A5A6', 'marginTop': '2px'})
                     ], style={'flex': '1', 'marginLeft': '12px'})
                 ], style={'display': 'flex', 'alignItems': 'center', 'marginBottom': '8px'}),
                 html.Div([
                     html.Span(f"AQI: {p.get('aqi', 0)}", style={'fontWeight': '800', 'fontSize': '1.1rem', 'color': badge_color}),
-                    html.Span(f" • PM2.5: {p.get('pm25', 0)} µg/m³", style={'fontSize': '0.85rem', 'color': '#BDC3C7', 'marginLeft': '8px'})
+                    html.Span(f" • PM2.5: {p.get('pm25', 0)} µg/m³", style={'fontSize': '0.95rem', 'color': '#ECF0F1', 'marginLeft': '8px', 'fontWeight': '500'})
                 ])
             ], style={
                 'background': 'linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
@@ -758,11 +875,17 @@ def update_tabs(tab):
                 'boxShadow': f'0 4px 8px {badge_color}22'
             }))
 
+
         return html.Div([
             stats_cards,
             middle_row,
             html.Div([
-                html.H4("🏆 Top 5 Worst Air Quality Stations", style={'color': '#ECF0F1', 'marginBottom': '12px', 'fontSize': '1.05rem'}),
+                html.Div("🏆 Top 5 Worst Air Quality Stations", style={
+                    'color': '#ECF0F1',
+                    'fontSize': '1.5rem',
+                    'fontWeight': '800',
+                    'marginBottom': '12px'
+                }),
                 html.Div(top5_cards)
             ], style={'marginTop': '6px'})
         ], style={
@@ -777,27 +900,61 @@ def update_tabs(tab):
         data = []
         for f in features:
             p = f["properties"]
+            
+            # Badge HTML generation for Markdown
+            cat = simplify_category(p.get("category", "Unknown"))
+            cat_color = COLORS.get(cat, COLORS["Moderate"])
+            cat_badge = f'<span style="background-color: {cat_color}22; color: {cat_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {cat_color}44;">{cat}</span>'
+            
+            aqi = p.get("aqi", 0)
+            aqi_color = COLORS["Good"]
+            if aqi > 200: aqi_color = COLORS["Hazardous"]
+            elif aqi > 100: aqi_color = COLORS["Unhealthy"]
+            elif aqi > 50: aqi_color = COLORS["Moderate"]
+            
+            aqi_badge = f'<span style="background-color: {aqi_color}22; color: {aqi_color}; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; border: 1px solid {aqi_color}44;">{aqi}</span>'
+
             data.append({
-                "Station": p.get("name", "Unknown"),
-                "City": p.get("city", "Unknown"),
-                "AQI": p.get("aqi", 0),
-                "PM2.5": p.get("pm25", 0),
-                "Category": simplify_category(p.get("category", "Unknown")),
-                "Status": "🟢 Online"
+                "City": f"{p.get('city', 'Unknown')}, {p.get('name', 'Unknown')}",
+                "ts": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "Category": cat_badge,
+                "AQI": aqi_badge,
+                "PM 2.5": p.get("pm25", 0)
             })
         df = pd.DataFrame(data)
 
         return html.Div([
             html.Div([
-                html.H4("📍 All Monitoring Stations", style={'color': '#ECF0F1', 'marginBottom': '12px'}),
-                html.P(f"Total: {len(df)} stations • Use filters to narrow down results", style={'color': '#95A5A6', 'fontSize': '0.85rem', 'marginBottom': '16px'})
-            ]),
+                html.Div([
+                    html.H2("All Monitoring Stations", style={'color': '#ECF0F1', 'fontSize': '1.5rem', 'fontWeight': '800', 'margin': '0'}),
+                    html.H3(f"Total: {len(df)} stations • Real-time Data", style={'color': '#95A5A6', 'fontSize': '0.9rem', 'fontWeight': '400', 'margin': '4px 0 0 0'})
+                ], style={'flex': '1'}),
+                html.Div([
+                    dcc.Input(id='search-city', placeholder='Search city...', type='text', style={
+                        'padding': '8px 12px', 'borderRadius': '6px', 'border': '1px solid #34495E',
+                        'backgroundColor': '#2C3E50', 'color': '#ECF0F1', 'marginRight': '10px'
+                    }),
+                    dcc.Dropdown(
+                        id='filter-category',
+                        options=[{'label': c, 'value': c} for c in ["Good", "Moderate", "Unhealthy", "Hazardous"]],
+                        placeholder="Filter Category",
+                        style={'width': '160px', 'color': '#333'}
+                    )
+                ], style={'display': 'flex', 'alignItems': 'center'})
+            ], style={'display': 'flex', 'alignItems': 'center', 'marginBottom': '16px', 'paddingBottom': '12px', 'borderBottom': '1px solid #2C3E50'}),
+
             dash_table.DataTable(
                 data=df.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in df.columns],
+                columns=[
+                    {'name': 'City', 'id': 'City'},
+                    {'name': 'Timestamp', 'id': 'ts'},
+                    {'name': 'Category', 'id': 'Category', 'presentation': 'markdown'},
+                    {'name': 'AQI', 'id': 'AQI', 'presentation': 'markdown'},
+                    {'name': 'PM 2.5', 'id': 'PM 2.5'}
+                ],
                 sort_action="native",
                 filter_action="native",
-                page_size=15,
+                page_size=10,
                 style_header={
                     'backgroundColor': '#223033',
                     'fontWeight': '700',
@@ -805,77 +962,25 @@ def update_tabs(tab):
                     'textAlign': 'left',
                     'padding': '12px',
                     'border': '1px solid #2C3E50',
-                    'fontSize': '0.9rem'
+                    'fontSize': '0.95rem'
                 },
                 style_cell={
                     'backgroundColor': '#172021',
                     'color': '#BDC3C7',
                     'border': '1px solid #223033',
                     'textAlign': 'left',
-                    'padding': '10px',
-                    'fontSize': '0.9rem'
-                },
-                style_data={
-                    'border': '1px solid #223033'
+                    'padding': '12px',
+                    'fontSize': '0.95rem',
+                    'fontFamily': '"Montserrat", sans-serif'
                 },
                 style_data_conditional=[
-                    # Alternating row colors
-                    {
-                        'if': {'row_index': 'odd'},
-                        'backgroundColor': '#1A2425'
-                    },
-                    # AQI highlighting
-                    {
-                        'if': {'filter_query': '{AQI} > 150', 'column_id': 'AQI'},
-                        'color': '#E53935',
-                        'fontWeight': 'bold'
-                    },
-                    {
-                        'if': {'filter_query': '{AQI} > 100 && {AQI} <= 150', 'column_id': 'AQI'},
-                        'color': '#FF8A65',
-                        'fontWeight': 'bold'
-                    },
-                    {
-                        'if': {'filter_query': '{AQI} > 50 && {AQI} <= 100', 'column_id': 'AQI'},
-                        'color': '#FFC107',
-                        'fontWeight': 'bold'
-                    },
-                    {
-                        'if': {'filter_query': '{AQI} <= 50', 'column_id': 'AQI'},
-                        'color': '#43A047',
-                        'fontWeight': 'bold'
-                    },
-                    # Category coloring
-                    {
-                        'if': {'filter_query': '{Category} = "Good"', 'column_id': 'Category'},
-                        'color': '#43A047',
-                        'fontWeight': '600'
-                    },
-                    {
-                        'if': {'filter_query': '{Category} = "Moderate"', 'column_id': 'Category'},
-                        'color': '#FFC107',
-                        'fontWeight': '600'
-                    },
-                    {
-                        'if': {'filter_query': '{Category} contains "Unhealthy"', 'column_id': 'Category'},
-                        'color': '#FF8A65',
-                        'fontWeight': '600'
-                    },
-                    {
-                        'if': {'filter_query': '{Category} = "Very Unhealthy"', 'column_id': 'Category'},
-                        'color': '#8E24AA',
-                        'fontWeight': '600'
-                    },
-                    {
-                        'if': {'filter_query': '{Category} = "Hazardous"', 'column_id': 'Category'},
-                        'color': '#E53935',
-                        'fontWeight': '600'
-                    }
+                    {'if': {'row_index': 'odd'}, 'backgroundColor': '#1A2425'}
                 ],
                 style_filter={
                     'backgroundColor': '#2C3E50',
                     'color': '#ECF0F1'
-                }
+                },
+                markdown_options={"html": True}
             )
         ])
 

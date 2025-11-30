@@ -185,9 +185,7 @@ async def stations_geojson(
         val = aqi_val if aqi_val > 0 else pm25_val
         if val <= 50: return "Good"
         if val <= 100: return "Moderate"
-        if val <= 150: return "Unhealthy for Sensitive Groups"
         if val <= 200: return "Unhealthy"
-        if val <= 300: return "Very Unhealthy"
         return "Hazardous"
 
     features = []
