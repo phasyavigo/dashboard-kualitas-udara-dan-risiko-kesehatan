@@ -211,14 +211,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License.
 
-## 👥 Authors
-
-- Daffa Fawwaz Garibaldi		235150307111011
-- Gilang Shido Faizalhaq		235150300111011
-- Peter Abednego Wijaya		    235150300111013
-- Rafie Habibi Fauzi			235150301111009
-- Phasya Vigo Khalil Nugroho	235150300111004
-- Dos Hansel Sihombing		    235150301111001
 
 ## 🙏 Acknowledgments
 
